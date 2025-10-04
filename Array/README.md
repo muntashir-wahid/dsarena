@@ -64,6 +64,20 @@ Deallocation is a constant-time operation handled by the memory manager. While t
 
 Performs a single integer comparison operation.
 
+---
+
+### Private Method: `is_valid_position(int index) const`
+
+**Purpose**: Validates whether a given index is a valid position for insertion operations.
+
+**Implementation Details**: Returns `true` if the index is within the valid range for insertion, which includes positions from 0 to `size` (inclusive). The upper bound is `size` rather than `size - 1` because insertion can occur at the end of the array, effectively appending a new element. The lower bound check ensures non-negative indices. This method encapsulates position validation logic, making it reusable across different operations that require bounds checking.
+
+**Time Complexity**: O(1)
+
+Performs two simple integer comparisons, both of which are constant-time operations regardless of array size.
+
+**Valid Range**: [0, size] inclusive, allowing insertion from the beginning to one position past the last element.
+
 ## Core Operations
 
 ### `getLength() const`
@@ -75,6 +89,20 @@ Performs a single integer comparison operation.
 **Time Complexity**: O(1)
 
 Simple member variable access with no computation involved.
+
+---
+
+### `display() const`
+
+**Purpose**: Prints the array contents to standard output in a formatted manner.
+
+**Implementation Details**: Iterates through all elements currently stored in the array and prints them in a comma-separated format enclosed in curly braces (e.g., `{1, 2, 3}`). Special handling ensures no trailing comma after the last element, providing clean output formatting.
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. The method must visit each element exactly once to print it, resulting in linear time complexity. The output operation itself may have additional overhead depending on I/O buffering, but asymptotically the complexity is linear in the number of elements.
+
+**Output Format**: `{element1, element2, ..., elementN}`
 
 ---
 
@@ -98,17 +126,28 @@ No elements need to be shifted or copied, making this one of the most efficient 
 
 ---
 
-### `display() const`
+### `insert(int index, int new_element)`
 
-**Purpose**: Prints the array contents to standard output in a formatted manner.
+**Purpose**: Inserts a new element at a specified position in the array, shifting subsequent elements to make room.
 
-**Implementation Details**: Iterates through all elements currently stored in the array and prints them in a comma-separated format enclosed in curly braces (e.g., `{1, 2, 3}`). Special handling ensures no trailing comma after the last element, providing clean output formatting.
+**Implementation Details**: The method first validates the insertion position using the `is_valid_position()` helper to ensure the index is within acceptable bounds. If the position is invalid, it throws an `out_of_range` exception. For valid positions, the method shifts all elements from the insertion point to the end of the array one position to the right, working backwards from the last element to avoid overwriting data. This creates an empty slot at the desired index where the new element is placed. Finally, the size counter is incremented to reflect the addition.
+
+The backwards iteration is crucial for correctness—starting from `size` (the first empty position) and moving down to `index + 1` ensures each element is copied before being overwritten. If iteration were forward, elements would be lost as they're overwritten before being copied.
 
 **Time Complexity**: O(n)
 
-Where n is the current size of the array. The method must visit each element exactly once to print it, resulting in linear time complexity. The output operation itself may have additional overhead depending on I/O buffering, but asymptotically the complexity is linear in the number of elements.
+Where n is the current size of the array. In the worst case (inserting at index 0), all existing elements must be shifted one position to the right, requiring n move operations. Even in the best case (inserting at the end, equivalent to append), the loop condition is immediately false, making it effectively O(1). However, the average case requires shifting approximately n/2 elements, which is still O(n) asymptotically.
 
-**Output Format**: `{element1, element2, ..., elementN}`
+The shifting operation dominates the time complexity:
+
+- Position validation: O(1)
+- Shifting loop: O(n) in worst case, O(1) in best case
+- Element assignment: O(1)
+- Size increment: O(1)
+
+**Exception Safety**: Throws `std::out_of_range` when attempting to insert at an invalid index (index < 0 or index > size).
+
+**Capacity Consideration**: Unlike `append()`, this method does not check for available capacity before insertion. If the array is at full capacity, inserting will cause undefined behavior as it attempts to write beyond allocated memory. This is a current limitation that should be addressed in future implementations.
 
 ## Current Limitations
 

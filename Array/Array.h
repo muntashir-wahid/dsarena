@@ -10,6 +10,8 @@ private:
     // Private helper methods
     bool has_capacity() const;
 
+    bool is_valid_position(int index) const;
+
 public:
     // Constructor
     Array(int capacity);
@@ -22,6 +24,8 @@ public:
     void append(int new_element);
 
     void display() const;
+
+    void insert(int index, int new_element);
 };
 
 #endif

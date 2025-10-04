@@ -4,7 +4,11 @@ using namespace std;
 
 // Private helper methods
 bool Array::has_capacity() const {
-  return this->size < this->capacity;
+  return size < capacity;
+}
+
+bool Array::is_valid_position(int index) const {
+  return index > -1 && index <= size; // For insert position checking
 }
 
 Array::Array(int capacity) {
@@ -43,4 +47,17 @@ void Array::display() const {
   }
 
   cout << "}" << endl;
+}
+
+void Array::insert(int index, int new_element) {
+  if(!is_valid_position(index)) {
+    throw out_of_range("Invalid index");
+  }
+
+  for(int i = size; i > index; i--) {
+    data[i] = data[i - 1];
+  }
+
+  data[index] = new_element;
+  size++;
 }
