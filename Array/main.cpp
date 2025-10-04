@@ -3,9 +3,17 @@
 using namespace std;
 
 int main() {
-    Array arr(10); 
+    Array arr(5); 
+    cout << "Size of the array is: " << arr.getLength() << endl;
 
-    cout << "Let's learn Array" << endl;
+    // arr.append(2);
+    // arr.append(4);
+    // arr.append(6);
+    // arr.append(9);
+    // arr.append(12);
+    // arr.append(16);
+
+    arr.display();
     
     return 0;
 }
