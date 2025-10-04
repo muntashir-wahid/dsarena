@@ -1,0 +1,24 @@
+# Ignore compiled object files
+*.o
+*.obj
+
+# Ignore compiled binary files
+*.exe
+*.out
+*.app
+
+# Ignore libraries
+*.lib
+*.a
+*.so
+*.dll
+*.dylib
+
+# Ignore debugging files
+*.pdb
+*.idb
+
+
+# Ignore Mac and Linux junk files
+.DS_Store
+Thumbs.db
