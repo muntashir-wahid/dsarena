@@ -94,3 +94,11 @@ int Array::first_index_of(int key) {
 
   return key_index;
 }
+
+int Array::at(int index) {
+  if(!is_valid_index(index)) {
+    throw out_of_range("Invalid index");
+  }
+
+  return data[index];
+}

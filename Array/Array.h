@@ -32,6 +32,8 @@ public:
     int remove(int index);
 
     int first_index_of(int key);
+
+    int at(int index);
 };
 
 #endif

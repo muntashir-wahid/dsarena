@@ -16,9 +16,9 @@ int main() {
     arr.insert(3, 8);
 
     arr.display();
-    int key = 120;
 
-    cout << "Index of key: " << key << ", is: " << arr.first_index_of(key) << endl;
+    int index = 7;
+    cout << "Element at index: " << index << ", is: " << arr.at(index) << endl;
     
     return 0;
 }
