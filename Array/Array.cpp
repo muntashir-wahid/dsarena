@@ -81,3 +81,16 @@ int Array::remove(int index) {
 
   return removed_element;
 }
+
+int Array::first_index_of(int key) {
+  int key_index = -1;
+
+  for(int i = 0; i < size; i++) {
+    if(data[i] == key) {
+      key_index = i;
+      break;
+    }
+  }
+
+  return key_index;
+}

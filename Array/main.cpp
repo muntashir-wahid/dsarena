@@ -16,16 +16,9 @@ int main() {
     arr.insert(3, 8);
 
     arr.display();
+    int key = 120;
 
-    arr.remove(4);
-
-    arr.display();
-    arr.remove(5);
-    arr.display();
-    arr.remove(0);
-    arr.display();
-    arr.remove(3);
-    arr.display();
+    cout << "Index of key: " << key << ", is: " << arr.first_index_of(key) << endl;
     
     return 0;
 }

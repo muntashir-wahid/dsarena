@@ -30,6 +30,8 @@ public:
     void insert(int index, int new_element);
 
     int remove(int index);
+
+    int first_index_of(int key);
 };
 
 #endif
