@@ -12,6 +12,8 @@ private:
 
     bool is_valid_position(int index) const;
 
+    bool is_valid_index(int index) const;
+
 public:
     // Constructor
     Array(int capacity);
@@ -26,6 +28,8 @@ public:
     void display() const;
 
     void insert(int index, int new_element);
+
+    int remove(int index);
 };
 
 #endif

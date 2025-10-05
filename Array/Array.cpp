@@ -11,6 +11,10 @@ bool Array::is_valid_position(int index) const {
   return index > -1 && index <= size; // For insert position checking
 }
 
+bool Array::is_valid_index(int index) const {
+  return index > -1 && index < size; // For valid index checking
+}
+
 Array::Array(int capacity) {
     this->capacity = capacity;
     this->size = 0;
@@ -60,4 +64,20 @@ void Array::insert(int index, int new_element) {
 
   data[index] = new_element;
   size++;
+}
+
+int Array::remove(int index) {
+  if(!is_valid_index(index)) {
+    throw out_of_range("Invalid index");
+  }
+
+  int removed_element = data[index];
+
+  for(int i = index; i < size - 1; i++) {
+    data[i] = data[i + 1];
+  }
+
+  size--;
+
+  return removed_element;
 }

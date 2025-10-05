@@ -16,6 +16,16 @@ int main() {
     arr.insert(3, 8);
 
     arr.display();
+
+    arr.remove(4);
+
+    arr.display();
+    arr.remove(5);
+    arr.display();
+    arr.remove(0);
+    arr.display();
+    arr.remove(3);
+    arr.display();
     
     return 0;
 }
