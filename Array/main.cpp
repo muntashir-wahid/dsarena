@@ -17,8 +17,12 @@ int main() {
 
     arr.display();
 
-    int index = 7;
-    cout << "Element at index: " << index << ", is: " << arr.at(index) << endl;
+    arr.set(4, 10);
+
+    arr.display();
+
+
+    
     
     return 0;
 }

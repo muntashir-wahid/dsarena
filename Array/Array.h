@@ -34,6 +34,8 @@ public:
     int first_index_of(int key);
 
     int at(int index);
+
+    void set(int index, int new_element);
 };
 
 #endif

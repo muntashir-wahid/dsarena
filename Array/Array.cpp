@@ -102,3 +102,11 @@ int Array::at(int index) {
 
   return data[index];
 }
+
+void Array::set(int index, int new_element) {
+  if(!is_valid_index(index)) {
+    throw out_of_range("Invalid index");
+  }
+
+  data[index] = new_element;
+}
