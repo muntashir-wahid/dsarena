@@ -82,8 +82,8 @@ int Array::remove(int index) {
   return removed_element;
 }
 
-int Array::first_index_of(int key) {
-  int key_index = -1;
+int Array::first_index_of(int key) const {
+  int key_index = NOT_FOUND;
 
   for(int i = 0; i < size; i++) {
     if(data[i] == key) {
@@ -95,7 +95,7 @@ int Array::first_index_of(int key) {
   return key_index;
 }
 
-int Array::at(int index) {
+int Array::at(int index) const {
   if(!is_valid_index(index)) {
     throw out_of_range("Invalid index");
   }

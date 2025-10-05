@@ -6,6 +6,7 @@ private:
     int *data;
     int size;
     int capacity;
+    static const int NOT_FOUND = -1;
 
     // Private helper methods
     bool has_capacity() const;
@@ -31,9 +32,9 @@ public:
 
     int remove(int index);
 
-    int first_index_of(int key);
+    int first_index_of(int key) const;
 
-    int at(int index);
+    int at(int index) const;
 
     void set(int index, int new_element);
 };

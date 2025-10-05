@@ -21,8 +21,5 @@ int main() {
 
     arr.display();
 
-
-    
-    
     return 0;
 }

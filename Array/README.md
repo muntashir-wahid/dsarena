@@ -78,6 +78,20 @@ Performs two simple integer comparisons, both of which are constant-time operati
 
 **Valid Range**: [0, size] inclusive, allowing insertion from the beginning to one position past the last element.
 
+---
+
+### Private Method: `is_valid_index(int index) const`
+
+**Purpose**: Validates whether a given index corresponds to an existing element in the array.
+
+**Implementation Details**: Returns `true` if the index is within the valid range for accessing existing elements, which includes positions from 0 to `size - 1` (inclusive). Unlike `is_valid_position()` which allows index equal to `size` for insertion purposes, this method enforces stricter bounds since you cannot access, modify, or remove an element that doesn't exist. The distinction between position validation and index validation is crucial for maintaining data integrity across different operations.
+
+**Time Complexity**: O(1)
+
+Performs two simple integer comparisons, both constant-time operations independent of array size.
+
+**Valid Range**: [0, size - 1] inclusive, covering only indices of existing elements.
+
 ## Core Operations
 
 ### `getLength() const`
@@ -149,6 +163,83 @@ The shifting operation dominates the time complexity:
 
 **Capacity Consideration**: Unlike `append()`, this method does not check for available capacity before insertion. If the array is at full capacity, inserting will cause undefined behavior as it attempts to write beyond allocated memory. This is a current limitation that should be addressed in future implementations.
 
+---
+
+### `remove(int index)`
+
+**Purpose**: Removes and returns the element at a specified index, shifting subsequent elements to fill the gap.
+
+**Implementation Details**: The method first validates that the index corresponds to an existing element using `is_valid_index()`. If invalid, it throws an `out_of_range` exception. For valid indices, the method saves the element to be removed for return purposes, then shifts all elements after the removal point one position to the left. This is accomplished by iterating forward from the removal index to the second-to-last element, copying each element from the right. The size is decremented to reflect the removal, and the original element value is returned.
+
+The forward iteration differs from `insert()`'s backward approach because we're moving elements left rather than right. Starting from the removal index and moving forward ensures each position receives the correct successor value without data loss.
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. In the worst case (removing at index 0), all subsequent elements must be shifted one position to the left, requiring approximately n-1 move operations. The best case (removing the last element at index size-1) requires no shifting, making it O(1). On average, removing from the middle requires shifting n/2 elements, which is still O(n) asymptotically.
+
+Operation breakdown:
+
+- Index validation: O(1)
+- Element retrieval: O(1)
+- Shifting loop: O(n) in worst case, O(1) in best case
+- Size decrement: O(1)
+
+**Return Value**: The element that was removed from the array.
+
+**Exception Safety**: Throws `std::out_of_range` when attempting to remove from an invalid index (index < 0 or index >= size).
+
+---
+
+### `first_index_of(int key) const`
+
+**Purpose**: Searches for the first occurrence of a specified value in the array and returns its index.
+
+**Implementation Details**: The method performs a linear search from the beginning of the array, comparing each element with the target key. Upon finding the first match, it immediately returns the index using a `break` statement to avoid unnecessary iterations. If the key is not found after checking all elements, the method returns `NOT_FOUND` (a constant likely defined as -1 in the header file) to indicate the absence of the element.
+
+This is a straightforward sequential search implementation that prioritizes simplicity and clarity. The early termination via `break` is an important optimization that prevents checking remaining elements once a match is found.
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. The worst case occurs when the element doesn't exist or is at the last position, requiring a complete traversal of all n elements. The best case (element at index 0) is O(1). On average, for a uniformly distributed dataset where the element exists, we'd expect to find it after checking n/2 elements, which is still O(n) asymptotically.
+
+This linear time complexity is inherent to unsorted array searching—without ordering information, every element might need to be examined.
+
+**Return Value**: Index of the first occurrence of the key, or `NOT_FOUND` if the key doesn't exist in the array.
+
+---
+
+### `at(int index) const`
+
+**Purpose**: Retrieves the element at a specified index with bounds checking.
+
+**Implementation Details**: This is a safe accessor method that validates the index using `is_valid_index()` before returning the element. If the index is out of bounds, it throws an `out_of_range` exception rather than causing undefined behavior. The `const` qualifier indicates this method doesn't modify the array state, making it callable on const Array objects and signaling its read-only nature to other developers.
+
+This method provides safer alternative to direct array access (which would be operator[]) by enforcing bounds checking at runtime.
+
+**Time Complexity**: O(1)
+
+Array element access by index is a constant-time operation. The memory address is computed as `base_address + (index * element_size)`, which involves only arithmetic operations. The bounds check adds two comparisons but doesn't change the asymptotic complexity.
+
+**Return Value**: The element stored at the specified index.
+
+**Exception Safety**: Throws `std::out_of_range` when attempting to access an invalid index (index < 0 or index >= size).
+
+---
+
+### `set(int index, int new_element)`
+
+**Purpose**: Updates the element at a specified index to a new value with bounds checking.
+
+**Implementation Details**: This is a safe mutator method that validates the index using `is_valid_index()` before modifying the element. If the index is out of bounds, it throws an `out_of_range` exception to prevent undefined behavior. Unlike `insert()` which adds a new element, this method replaces an existing element, maintaining the array's size.
+
+The method enforces data integrity by ensuring only valid positions can be modified, preventing accidental memory corruption or accessing uninitialized memory regions.
+
+**Time Complexity**: O(1)
+
+Direct array element assignment by index is a constant-time operation. The memory address calculation and assignment both take fixed time regardless of array size. The bounds check adds negligible constant overhead.
+
+**Exception Safety**: Throws `std::out_of_range` when attempting to modify an invalid index (index < 0 or index >= size).
+
 ## Current Limitations
 
 - **Fixed Capacity**: Once created, the array cannot grow beyond its initial capacity. Attempting to append beyond capacity results in an exception rather than automatic resizing.
@@ -157,4 +248,4 @@ The shifting operation dominates the time complexity:
 
 - **Basic Display**: The display method provides simple console output but doesn't support custom formatting or output to different streams.
 
-_Last Updated: 4th, October 2025_
+_Last Updated: 5th, October 2025_
