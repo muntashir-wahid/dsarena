@@ -37,6 +37,8 @@ public:
     int at(int index) const;
 
     void set(int index, int new_element);
+
+    bool is_sorted();
 };
 
 #endif

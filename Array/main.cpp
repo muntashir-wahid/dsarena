@@ -17,9 +17,11 @@ int main() {
 
     arr.display();
 
-    arr.set(4, 10);
+    arr.set(4, 160);
 
     arr.display();
+
+    cout << "Array is sorted: " << arr.is_sorted() << endl;
 
     return 0;
 }

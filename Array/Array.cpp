@@ -110,3 +110,11 @@ void Array::set(int index, int new_element) {
 
   data[index] = new_element;
 }
+
+bool Array::is_sorted() {
+  for(int i = 0; i < size - 1; i++) {
+    if(data[i] > data[i + 1]) return false;
+  }
+
+  return true;
+}
