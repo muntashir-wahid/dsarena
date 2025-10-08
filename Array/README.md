@@ -240,6 +240,41 @@ Direct array element assignment by index is a constant-time operation. The memor
 
 **Exception Safety**: Throws `std::out_of_range` when attempting to modify an invalid index (index < 0 or index >= size).
 
+---
+
+### `reverse()`
+
+**Purpose**: Reverses the order of all elements in the array in-place, transforming the array so that the first element becomes the last and vice versa.
+
+**Implementation Details**: The method uses a two-pointer technique to efficiently reverse the array without requiring additional storage. It begins with an early return optimization for arrays with zero or one element, as these are trivially already "reversed."
+
+For arrays with multiple elements, two pointers are initialized: `left` starting at index 0 and `right` starting at index `size - 1`. The algorithm then proceeds to swap elements at these pointer positions using a temporary variable to avoid data loss during the exchange. After each swap, the `left` pointer moves forward and the `right` pointer moves backward, progressively working toward the center of the array.
+
+The loop continues while `left < right`, ensuring that each pair of elements is swapped exactly once. When the pointers meet or cross in the middle, all elements have been properly repositioned and the array is fully reversed. This approach modifies the array in-place, requiring no additional data structure allocation.
+
+The three-step swap using a temporary variable is the classic approach:
+
+1. Save the left element in a temporary variable
+2. Copy the right element to the left position
+3. Copy the temporary (original left) to the right position
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. The method performs exactly n/2 swaps (rounded down) regardless of the array's contents, visiting each element once during the reversal process. While only half the elements are explicitly swapped, each element must be accessed and moved, resulting in linear time complexity proportional to the array size.
+
+Operation breakdown:
+
+- Size check: O(1)
+- Pointer initialization: O(1)
+- Swap loop: O(n/2) which simplifies to O(n)
+- Each swap operation: O(1)
+
+**Space Complexity**: O(1)
+
+The algorithm uses only a constant amount of extra space (three integer variables: `left`, `right`, and `temp`) regardless of array size, making it an in-place algorithm. No auxiliary data structures are allocated.
+
+**Modification**: This method modifies the original array. If the original order needs to be preserved, a copy should be made before calling `reverse()`.
+
 ## Current Limitations
 
 - **Fixed Capacity**: Once created, the array cannot grow beyond its initial capacity. Attempting to append beyond capacity results in an exception rather than automatic resizing.
