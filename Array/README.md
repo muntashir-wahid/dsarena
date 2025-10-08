@@ -283,4 +283,4 @@ The algorithm uses only a constant amount of extra space (three integer variable
 
 - **Basic Display**: The display method provides simple console output but doesn't support custom formatting or output to different streams.
 
-_Last Updated: 5th, October 2025_
+_Last Updated: 8th, October 2025_
