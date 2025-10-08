@@ -118,3 +118,20 @@ bool Array::is_sorted() {
 
   return true;
 }
+
+void Array::reverse() {
+  if(size <= 1) return;
+
+  int left = 0;
+  int right = size - 1;
+
+  while(left < right) {
+    int temp = data[left];
+    data[left] = data[right];
+    data[right] = temp;
+
+    left++;
+    right--;
+  }
+
+}

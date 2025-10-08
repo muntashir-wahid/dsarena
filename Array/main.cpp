@@ -4,7 +4,6 @@ using namespace std;
 
 int main() {
     Array arr(10); 
-    cout << "Size of the array is: " << arr.getLength() << endl;
 
     arr.append(2);
     arr.append(4);
@@ -12,16 +11,15 @@ int main() {
     arr.append(9);
     arr.append(12);
     arr.append(16);
-
     arr.insert(3, 8);
-
-    arr.display();
-
     arr.set(4, 160);
 
+    cout << "---- Array before reverse ----" << endl;
     arr.display();
 
-    cout << "Array is sorted: " << arr.is_sorted() << endl;
+    cout << "---- Array After reverse ----" << endl;
+    arr.reverse();
+    arr.display();
 
     return 0;
 }
