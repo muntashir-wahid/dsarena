@@ -134,5 +134,24 @@ void Array::reverse() {
     left++;
     right--;
   }
+}
 
+void Array::left_shift() {
+  for(int i = 0; i < size - 1; i++) {
+    data[i] = data[i + 1];
+  }
+
+  data[size - 1] = 0;
+}
+
+void Array::left_rotate() {
+  if(size <= 1) return;
+
+  int first_element = data[0];
+
+  for(int i = 0; i < size - 1; i++) {
+    data[i] = data[i + 1];
+  }
+
+  data[size - 1] = first_element;
 }

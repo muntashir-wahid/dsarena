@@ -41,6 +41,10 @@ public:
     bool is_sorted(bool ascending = true) const;
 
     void reverse();
+
+    void left_shift();
+
+    void left_rotate();
 };
 
 #endif
