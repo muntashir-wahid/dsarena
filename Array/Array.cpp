@@ -167,5 +167,14 @@ void Array::right_shift() {
 }
 
 void Array::right_rotate() {
+  if(size <= 1) return;
 
+  const int LAST_INDEX = size - 1;
+  int last_element = data[LAST_INDEX];
+
+  for(int i = LAST_INDEX; i > 0; i--) {
+    data[i] = data[i - 1];
+  }
+
+  data[0] = last_element;
 }

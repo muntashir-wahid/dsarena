@@ -373,6 +373,68 @@ The algorithm uses only a constant amount of extra space (two integer variables:
 
 ---
 
+### `right_shift()`
+
+**Purpose**: Shifts all elements in the array one position to the right, with the leftmost position filled with zero.
+
+**Implementation Details**: The method performs a linear shift operation where each element moves to the position of its successor. The algorithm begins with an early return optimization for empty arrays, as shifting has no effect when size is zero. Starting from the rightmost element (index `size - 1`) and working backwards to index 1, each element is replaced by the element at the previous position (index - 1). The iteration continues through all elements except the first, effectively moving every element except the leftmost one position to the right. After the shifting is complete, the leftmost position (index 0) is explicitly set to zero, maintaining the array's size while introducing a zero value at the beginning.
+
+This operation is destructive—the rightmost element is permanently lost and cannot be recovered. Unlike rotation operations, right shift does not preserve all original values, making it useful for scenarios where elements need to be discarded from the end of the array while maintaining a fixed size. The backwards iteration is crucial to prevent data corruption, as moving elements forward from left to right would overwrite values before they could be copied.
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. The method must visit and modify each element exactly once during the shifting process, except for the first element which receives a zero value. The loop performs n-1 assignments for the shifting operation, plus one additional assignment to set the initial position to zero, resulting in linear time complexity proportional to the array size.
+
+Operation breakdown:
+
+- Size check: O(1)
+- Shifting loop: O(n-1) which simplifies to O(n)
+- Each assignment: O(1)
+- Final zero assignment: O(1)
+
+**Space Complexity**: O(1)
+
+The algorithm uses only a constant amount of extra space (the loop variable `i`) regardless of array size, making it an in-place operation. No temporary storage or auxiliary data structures are required.
+
+**Modification**: This method modifies the original array and permanently loses the rightmost element. The array size remains unchanged, but the content is altered.
+
+**Use Cases**: Useful for implementing stack-like behavior where elements are processed from the right, prepending operations where new data will be inserted at the beginning, or for sliding window operations where the newest data needs to be discarded.
+
+---
+
+### `right_rotate()`
+
+**Purpose**: Rotates all elements in the array one position to the right, with the rightmost element moving to the leftmost position.
+
+**Implementation Details**: The method performs a cyclic rotation where no elements are lost—each element moves to the position of its successor, and the last element wraps around to become the first element. The algorithm begins with an early return optimization for arrays with zero or one element, as rotation has no effect on such arrays.
+
+For arrays with multiple elements, the method first calculates the last index using a constant `LAST_INDEX = size - 1` for clarity and saves the rightmost element (at this last index) in a temporary variable to prevent it from being overwritten during the shifting process. Then, it performs a right shift operation similar to `right_shift()`, moving each element from position i-1 to position i, starting from the last index and working backwards to index 1. Finally, the saved last element is placed at the first position (index 0), completing the rotation.
+
+Unlike `right_shift()` which discards the rightmost element, `right_rotate()` preserves all elements by moving the last element to the beginning. This maintains the same set of values while changing their relative positions, making it a true rotation operation. The use of a named constant for the last index improves code readability and makes the algorithm's intent clearer.
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. The method must visit and modify each element exactly once during the rotation process. The algorithm performs one element save operation, n-1 shift assignments, and one final placement, all of which contribute to linear time complexity proportional to the array size.
+
+Operation breakdown:
+
+- Size check: O(1)
+- Last index calculation: O(1)
+- Last element save: O(1)
+- Shifting loop: O(n-1) which simplifies to O(n)
+- Each assignment: O(1)
+- Final placement: O(1)
+
+**Space Complexity**: O(1)
+
+The algorithm uses only a constant amount of extra space (three integer variables: the loop variable, the last index constant, and the temporary storage for the last element) regardless of array size, making it an in-place operation. No auxiliary data structures are allocated.
+
+**Modification**: This method modifies the original array but preserves all elements. The array size remains unchanged, and no data is lost—only the positions of elements change.
+
+**Use Cases**: Useful for implementing circular buffer operations in reverse direction, rotating through a sequence of values backwards, or shifting data in cyclic patterns where all elements must be preserved and the rotation direction matters for the application logic.
+
+---
+
 ## Current Limitations
 
 - **Fixed Capacity**: Once created, the array cannot grow beyond its initial capacity. Attempting to append beyond capacity results in an exception rather than automatic resizing.

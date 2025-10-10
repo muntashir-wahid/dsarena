@@ -5,7 +5,7 @@ using namespace std;
 int main() {
     Array arr(10); 
 
-    // arr.append(2);
+    arr.append(2);
     // arr.append(4);
     // arr.append(6);
     // arr.append(9);
@@ -16,8 +16,8 @@ int main() {
 
     arr.display();
 
-    cout << "---- Perform right shift on the Array ----" << endl;
-    arr.right_shift();
+    cout << "---- Perform right rotate on the Array ----" << endl;
+    arr.right_rotate();
 
     arr.display();
 
