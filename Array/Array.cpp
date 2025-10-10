@@ -111,9 +111,10 @@ void Array::set(int index, int new_element) {
   data[index] = new_element;
 }
 
-bool Array::is_sorted() {
+bool Array::is_sorted(bool ascending) const {
   for(int i = 0; i < size - 1; i++) {
-    if(data[i] > data[i + 1]) return false;
+    if(ascending && data[i] > data[i + 1]) return false;
+    if(!ascending && data[i] < data[i + 1]) return false;
   }
 
   return true;

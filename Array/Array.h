@@ -38,7 +38,7 @@ public:
 
     void set(int index, int new_element);
 
-    bool is_sorted();
+    bool is_sorted(bool ascending = true) const;
 
     void reverse();
 };

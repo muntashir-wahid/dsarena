@@ -242,6 +242,42 @@ Direct array element assignment by index is a constant-time operation. The memor
 
 ---
 
+### `is_sorted(bool ascending = true) const`
+
+**Purpose**: Checks whether the array is sorted in either ascending or descending order based on the specified parameter.
+
+**Implementation Details**: The method performs a single pass through the array, comparing each element with its successor to verify the ordering constraint. The boolean parameter `ascending` determines which ordering to check: when `true`, it verifies ascending order (each element ≤ next element), and when `false`, it verifies descending order (each element ≥ next element).
+
+The algorithm iterates through indices 0 to `size - 2`, comparing `data[i]` with `data[i + 1]`. For ascending order, if any element is greater than its successor, the array violates the sorted property and the method immediately returns `false`. For descending order, if any element is less than its successor, the same violation occurs. The early return optimization prevents unnecessary comparisons once a violation is detected.
+
+If the loop completes without finding any violations, the array satisfies the ordering constraint and the method returns `true`. Arrays with zero or one element are trivially considered sorted, as the loop body never executes.
+
+The method uses the `const` qualifier since it only reads array elements without modification, allowing it to be called on const Array objects and clearly communicating its read-only nature.
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. In the worst case (when the array is perfectly sorted), the method must compare all n-1 adjacent pairs, visiting every element exactly once. The best case occurs when the first pair violates the ordering, resulting in O(1) with immediate return. On average, for randomly ordered arrays, a violation is typically found early, but the worst-case linear complexity must be considered for algorithm analysis.
+
+Operation breakdown:
+
+- Loop iteration: O(n) in worst case
+- Each comparison: O(1)
+- Early return: O(1) when triggered
+
+**Return Value**: `true` if the array is sorted according to the specified order, `false` otherwise.
+
+**Parameters**:
+
+- `ascending` (bool): Determines the sort order to check. `true` checks for ascending order (default), `false` checks for descending order.
+
+**Edge Cases**:
+
+- Empty arrays (size = 0): Returns `true` (trivially sorted)
+- Single-element arrays (size = 1): Returns `true` (trivially sorted)
+- Arrays with duplicate values: Considered sorted if all duplicates maintain the order (non-strict ordering)
+
+---
+
 ### `reverse()`
 
 **Purpose**: Reverses the order of all elements in the array in-place, transforming the array so that the first element becomes the last and vice versa.
@@ -283,4 +319,4 @@ The algorithm uses only a constant amount of extra space (three integer variable
 
 - **Basic Display**: The display method provides simple console output but doesn't support custom formatting or output to different streams.
 
-_Last Updated: 8th, October 2025_
+_Last Updated: 10th, October 2025_
