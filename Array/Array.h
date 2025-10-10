@@ -45,6 +45,10 @@ public:
     void left_shift();
 
     void left_rotate();
+
+    void right_shift();
+
+    void right_rotate();
 };
 
 #endif

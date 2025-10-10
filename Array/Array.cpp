@@ -155,3 +155,17 @@ void Array::left_rotate() {
 
   data[size - 1] = first_element;
 }
+
+void Array::right_shift() {
+  if (size == 0) return; 
+
+  for(int i = size - 1; i > 0; i--) {
+    data[i] = data[i - 1];
+  }
+
+  data[0] = 0;
+}
+
+void Array::right_rotate() {
+
+}
