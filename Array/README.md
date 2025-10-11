@@ -94,7 +94,7 @@ Performs two simple integer comparisons, both constant-time operations independe
 
 ## Core Operations
 
-### `getLength() const`
+### `get_length() const`
 
 **Purpose**: Returns the current number of elements stored in the array.
 

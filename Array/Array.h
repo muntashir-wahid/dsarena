@@ -22,7 +22,7 @@ public:
     // Destructor
     ~Array();
 
-    int getLength() const;
+    int get_length() const;
 
     void append(int new_element);
 
@@ -49,6 +49,8 @@ public:
     void right_shift();
 
     void right_rotate();
+
+    void merge(const Array&);
 };
 
 #endif

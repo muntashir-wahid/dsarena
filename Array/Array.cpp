@@ -25,7 +25,7 @@ Array::~Array() {
     delete[] data;
 }
 
-int Array::getLength() const {
+int Array::get_length() const {
   return size;
 }
 
@@ -177,4 +177,49 @@ void Array::right_rotate() {
   }
 
   data[0] = last_element;
+}
+
+void Array::merge(const Array &new_array) {
+  
+  if(!this->is_sorted() || !new_array.is_sorted()) {
+    throw runtime_error("Both arrays must be sorted in ascending order before merging.");
+  }
+
+  const int required_capacity = new_array.get_length() + this->size;
+  const int merged_array_capacity = required_capacity > this->capacity ? required_capacity : this->capacity;
+
+  int *merged_data = new int[merged_array_capacity];
+
+  int i = 0; 
+  int j = 0; 
+  int k = 0;
+
+  while(i < this->size && j < new_array.get_length()) {
+    if(data[i] < new_array.at(j)) {
+      merged_data[k] = data[i];
+      i++;
+      k++;
+    } else {
+      merged_data[k] = new_array.at(j);
+      j++;
+      k++;
+    }
+  }
+
+  while (i < this->size) {
+    merged_data[k] = data[i];
+    i++;
+    k++; 
+  }
+  
+  while (j < new_array.get_length()) {
+    merged_data[k] = new_array.at(j);
+    j++;
+    k++; 
+  }
+
+  this->capacity = merged_array_capacity;
+  this->size = k;
+  delete[] this->data;
+  this->data = merged_data;
 }

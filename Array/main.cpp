@@ -6,29 +6,34 @@ int main() {
     Array arr(10); 
 
     arr.append(2);
-    // arr.append(4);
-    // arr.append(6);
-    // arr.append(9);
+    arr.append(4);
+    arr.append(6);
+    arr.append(9);
+    arr.append(12);
+    arr.append(16);
+    arr.insert(3, 8);
+
+    cout << "---- First Array ----" << endl;
+    arr.display();
+
+    Array arr_new(10);
+    arr_new.append(1);
+    arr_new.append(3);
+    arr_new.append(5);
+    arr_new.append(15);
+    arr_new.append(20);
+    arr_new.append(22);
+
+    cout << "---- Second Array ----" << endl;
+    arr_new.display();
+
+    arr.merge(arr_new);
+
+    cout << "---- After Merge ----" << endl;
+    arr.display();
+
     // arr.append(12);
-    // arr.append(16);
-    // arr.insert(3, 8);
-    // arr.set(4, 160);
-
-    arr.display();
-
-    cout << "---- Perform right rotate on the Array ----" << endl;
-    arr.right_rotate();
-
-    arr.display();
-
-    // cout << "---- Array before reverse ----" << endl;
     // arr.display();
-    // cout << "Array is sorted in ascending order: " << arr.is_sorted() << endl;
-
-    // cout << "---- Array After reverse ----" << endl;
-    // arr.reverse();
-    // arr.display();
-    // cout << "Array is sorted in deacending order: " << arr.is_sorted() << endl;
 
     return 0;
 }
