@@ -435,6 +435,49 @@ The algorithm uses only a constant amount of extra space (three integer variable
 
 ---
 
+### `merge(const Array &new_array)`
+
+**Purpose**: Merges two sorted arrays into a single sorted array, combining elements from both arrays while maintaining ascending order.
+
+**Implementation Details**: The method implements a classic merge operation that combines two pre-sorted arrays into a single sorted result. The algorithm begins by validating that both the current array (`this`) and the parameter array (`new_array`) are sorted in ascending order using the `is_sorted()` method. If either array is not sorted, it throws a `runtime_error` to ensure the merge operation's correctness, as the algorithm relies on the sorted property for efficiency.
+
+The method calculates the required capacity by summing the sizes of both arrays and determines the final capacity as the maximum between this required capacity and the current array's capacity. This ensures sufficient space for all elements while potentially preserving existing capacity for future operations. A new temporary array (`merged_data`) is allocated with this calculated capacity.
+
+The core merging logic uses a three-pointer technique with variables `i`, `j`, and `k` representing indices for the current array, the new array, and the merged result respectively. The algorithm compares elements from both arrays and places the smaller element into the merged array, advancing the corresponding source pointer and the result pointer. This continues until one array is exhausted.
+
+After the main comparison loop, two cleanup loops handle any remaining elements from either array, ensuring all elements are included in the final result. Finally, the method updates the current array's properties: it deallocates the old data array, updates the capacity and size, and assigns the new merged data pointer. This effectively transforms the current array into the merged result while properly managing memory.
+
+**Time Complexity**: O(m + n)
+
+Where m is the size of the current array and n is the size of the parameter array. The algorithm performs exactly one comparison per element placement and visits each element from both arrays exactly once. The three distinct phases each contribute linear time:
+
+- Sorting validation: O(m) + O(n) for checking both arrays
+- Main merge loop: O(min(m, n)) comparisons
+- Cleanup loops: O(max(m, n) - min(m, n)) for remaining elements
+- Total element processing: O(m + n)
+
+The memory allocation and deallocation operations are considered constant time in the context of the algorithm's overall complexity.
+
+**Space Complexity**: O(m + n)
+
+The algorithm requires additional space proportional to the combined size of both arrays for the temporary merged array. This is not an in-place operation, as it needs to maintain the original arrays during the merge process before replacing the current array's data.
+
+**Exception Safety**: Throws `std::runtime_error` when either array is not sorted in ascending order. The method provides strong exception safety—if an exception is thrown during validation, the original array remains unchanged.
+
+**Modification**: This method modifies the current array by replacing its contents with the merged result. The original data is lost, and the array's capacity may increase if needed to accommodate the combined elements.
+
+**Memory Management**: The method handles dynamic memory allocation and deallocation carefully. It allocates new memory for the merged result, copies all elements, then properly deallocates the original array memory before updating the pointer, preventing memory leaks.
+
+**Parameters**:
+
+- `new_array` (const Array&): The second sorted array to merge with the current array. Passed by const reference for efficiency and to prevent modification of the source array.
+
+**Preconditions**: Both arrays must be sorted in ascending order. This is enforced at runtime with exception throwing.
+
+**Use Cases**: Essential for merge sort implementations, combining sorted datasets, merging sorted streams of data, or any scenario where two ordered collections need to be combined while preserving order. Particularly useful in divide-and-conquer algorithms and external sorting operations.
+
+---
+
 ## Current Limitations
 
 - **Fixed Capacity**: Once created, the array cannot grow beyond its initial capacity. Attempting to append beyond capacity results in an exception rather than automatic resizing.
@@ -443,4 +486,4 @@ The algorithm uses only a constant amount of extra space (three integer variable
 
 - **Basic Display**: The display method provides simple console output but doesn't support custom formatting or output to different streams.
 
-_Last Updated: 10th, October 2025_
+_Last Updated: 11th, October 2025_
