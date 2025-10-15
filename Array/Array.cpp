@@ -58,6 +58,8 @@ void Array::insert(int index, int new_element) {
     throw out_of_range("Invalid index");
   }
 
+  if(!has_capacity()) throw out_of_range("Array is full");
+
   for(int i = size; i > index; i--) {
     data[i] = data[i - 1];
   }

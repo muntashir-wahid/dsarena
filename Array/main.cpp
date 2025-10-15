@@ -32,8 +32,6 @@ int main() {
     cout << "---- After Merge ----" << endl;
     arr.display();
 
-    // arr.append(12);
-    // arr.display();
 
     return 0;
 }
