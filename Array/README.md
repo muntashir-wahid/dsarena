@@ -94,7 +94,7 @@ Performs two simple integer comparisons, both constant-time operations independe
 
 ## Core Operations
 
-### `getLength() const`
+### `get_length() const`
 
 **Purpose**: Returns the current number of elements stored in the array.
 
@@ -242,6 +242,42 @@ Direct array element assignment by index is a constant-time operation. The memor
 
 ---
 
+### `is_sorted(bool ascending = true) const`
+
+**Purpose**: Checks whether the array is sorted in either ascending or descending order based on the specified parameter.
+
+**Implementation Details**: The method performs a single pass through the array, comparing each element with its successor to verify the ordering constraint. The boolean parameter `ascending` determines which ordering to check: when `true`, it verifies ascending order (each element ≤ next element), and when `false`, it verifies descending order (each element ≥ next element).
+
+The algorithm iterates through indices 0 to `size - 2`, comparing `data[i]` with `data[i + 1]`. For ascending order, if any element is greater than its successor, the array violates the sorted property and the method immediately returns `false`. For descending order, if any element is less than its successor, the same violation occurs. The early return optimization prevents unnecessary comparisons once a violation is detected.
+
+If the loop completes without finding any violations, the array satisfies the ordering constraint and the method returns `true`. Arrays with zero or one element are trivially considered sorted, as the loop body never executes.
+
+The method uses the `const` qualifier since it only reads array elements without modification, allowing it to be called on const Array objects and clearly communicating its read-only nature.
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. In the worst case (when the array is perfectly sorted), the method must compare all n-1 adjacent pairs, visiting every element exactly once. The best case occurs when the first pair violates the ordering, resulting in O(1) with immediate return. On average, for randomly ordered arrays, a violation is typically found early, but the worst-case linear complexity must be considered for algorithm analysis.
+
+Operation breakdown:
+
+- Loop iteration: O(n) in worst case
+- Each comparison: O(1)
+- Early return: O(1) when triggered
+
+**Return Value**: `true` if the array is sorted according to the specified order, `false` otherwise.
+
+**Parameters**:
+
+- `ascending` (bool): Determines the sort order to check. `true` checks for ascending order (default), `false` checks for descending order.
+
+**Edge Cases**:
+
+- Empty arrays (size = 0): Returns `true` (trivially sorted)
+- Single-element arrays (size = 1): Returns `true` (trivially sorted)
+- Arrays with duplicate values: Considered sorted if all duplicates maintain the order (non-strict ordering)
+
+---
+
 ### `reverse()`
 
 **Purpose**: Reverses the order of all elements in the array in-place, transforming the array so that the first element becomes the last and vice versa.
@@ -275,6 +311,173 @@ The algorithm uses only a constant amount of extra space (three integer variable
 
 **Modification**: This method modifies the original array. If the original order needs to be preserved, a copy should be made before calling `reverse()`.
 
+---
+
+### `left_shift()`
+
+**Purpose**: Shifts all elements in the array one position to the left, with the rightmost position filled with zero.
+
+**Implementation Details**: The method performs a linear shift operation where each element moves to the position of its predecessor. Starting from index 0, each element is replaced by the element at the next position (index + 1). The iteration continues through `size - 1` elements, effectively moving every element except the last one position to the left. After the shifting is complete, the rightmost position (index `size - 1`) is explicitly set to zero, maintaining the array's size while introducing a zero value at the end.
+
+This operation is destructive—the leftmost element is permanently lost and cannot be recovered. Unlike rotation operations, left shift does not preserve all original values, making it useful for scenarios where elements need to be discarded from the beginning of the array while maintaining a fixed size.
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. The method must visit and modify each element exactly once during the shifting process, except for the last element which receives a zero value. The loop performs n-1 assignments for the shifting operation, plus one additional assignment to set the final position to zero, resulting in linear time complexity proportional to the array size.
+
+Operation breakdown:
+
+- Shifting loop: O(n-1) which simplifies to O(n)
+- Each assignment: O(1)
+- Final zero assignment: O(1)
+
+**Space Complexity**: O(1)
+
+The algorithm uses only a constant amount of extra space (the loop variable `i`) regardless of array size, making it an in-place operation. No temporary storage or auxiliary data structures are required.
+
+**Modification**: This method modifies the original array and permanently loses the leftmost element. The array size remains unchanged, but the content is altered.
+
+**Use Cases**: Useful for implementing queue-like behavior where elements are processed from the left, or for sliding window operations where the oldest data needs to be discarded.
+
+---
+
+### `left_rotate()`
+
+**Purpose**: Rotates all elements in the array one position to the left, with the leftmost element moving to the rightmost position.
+
+**Implementation Details**: The method performs a cyclic rotation where no elements are lost—each element moves to the position of its predecessor, and the first element wraps around to become the last element. The algorithm begins with an early return optimization for arrays with zero or one element, as rotation has no effect on such arrays.
+
+For arrays with multiple elements, the method first saves the leftmost element (at index 0) in a temporary variable to prevent it from being overwritten during the shifting process. Then, it performs a left shift operation similar to `left_shift()`, moving each element from position i+1 to position i, starting from index 0 and continuing through `size - 2`. Finally, the saved first element is placed at the last position (index `size - 1`), completing the rotation.
+
+Unlike `left_shift()` which discards the leftmost element, `left_rotate()` preserves all elements by moving the first element to the end. This maintains the same set of values while changing their relative positions, making it a true rotation operation.
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. The method must visit and modify each element exactly once during the rotation process. The algorithm performs one element save operation, n-1 shift assignments, and one final placement, all of which contribute to linear time complexity proportional to the array size.
+
+Operation breakdown:
+
+- Size check: O(1)
+- First element save: O(1)
+- Shifting loop: O(n-1) which simplifies to O(n)
+- Each assignment: O(1)
+- Final placement: O(1)
+
+**Space Complexity**: O(1)
+
+The algorithm uses only a constant amount of extra space (two integer variables: the loop variable and the temporary storage for the first element) regardless of array size, making it an in-place operation. No auxiliary data structures are allocated.
+
+**Modification**: This method modifies the original array but preserves all elements. The array size remains unchanged, and no data is lost—only the positions of elements change.
+
+**Use Cases**: Useful for implementing circular buffer operations, rotating through a sequence of values, or shifting data in cyclic patterns where all elements must be preserved.
+
+---
+
+### `right_shift()`
+
+**Purpose**: Shifts all elements in the array one position to the right, with the leftmost position filled with zero.
+
+**Implementation Details**: The method performs a linear shift operation where each element moves to the position of its successor. The algorithm begins with an early return optimization for empty arrays, as shifting has no effect when size is zero. Starting from the rightmost element (index `size - 1`) and working backwards to index 1, each element is replaced by the element at the previous position (index - 1). The iteration continues through all elements except the first, effectively moving every element except the leftmost one position to the right. After the shifting is complete, the leftmost position (index 0) is explicitly set to zero, maintaining the array's size while introducing a zero value at the beginning.
+
+This operation is destructive—the rightmost element is permanently lost and cannot be recovered. Unlike rotation operations, right shift does not preserve all original values, making it useful for scenarios where elements need to be discarded from the end of the array while maintaining a fixed size. The backwards iteration is crucial to prevent data corruption, as moving elements forward from left to right would overwrite values before they could be copied.
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. The method must visit and modify each element exactly once during the shifting process, except for the first element which receives a zero value. The loop performs n-1 assignments for the shifting operation, plus one additional assignment to set the initial position to zero, resulting in linear time complexity proportional to the array size.
+
+Operation breakdown:
+
+- Size check: O(1)
+- Shifting loop: O(n-1) which simplifies to O(n)
+- Each assignment: O(1)
+- Final zero assignment: O(1)
+
+**Space Complexity**: O(1)
+
+The algorithm uses only a constant amount of extra space (the loop variable `i`) regardless of array size, making it an in-place operation. No temporary storage or auxiliary data structures are required.
+
+**Modification**: This method modifies the original array and permanently loses the rightmost element. The array size remains unchanged, but the content is altered.
+
+**Use Cases**: Useful for implementing stack-like behavior where elements are processed from the right, prepending operations where new data will be inserted at the beginning, or for sliding window operations where the newest data needs to be discarded.
+
+---
+
+### `right_rotate()`
+
+**Purpose**: Rotates all elements in the array one position to the right, with the rightmost element moving to the leftmost position.
+
+**Implementation Details**: The method performs a cyclic rotation where no elements are lost—each element moves to the position of its successor, and the last element wraps around to become the first element. The algorithm begins with an early return optimization for arrays with zero or one element, as rotation has no effect on such arrays.
+
+For arrays with multiple elements, the method first calculates the last index using a constant `LAST_INDEX = size - 1` for clarity and saves the rightmost element (at this last index) in a temporary variable to prevent it from being overwritten during the shifting process. Then, it performs a right shift operation similar to `right_shift()`, moving each element from position i-1 to position i, starting from the last index and working backwards to index 1. Finally, the saved last element is placed at the first position (index 0), completing the rotation.
+
+Unlike `right_shift()` which discards the rightmost element, `right_rotate()` preserves all elements by moving the last element to the beginning. This maintains the same set of values while changing their relative positions, making it a true rotation operation. The use of a named constant for the last index improves code readability and makes the algorithm's intent clearer.
+
+**Time Complexity**: O(n)
+
+Where n is the current size of the array. The method must visit and modify each element exactly once during the rotation process. The algorithm performs one element save operation, n-1 shift assignments, and one final placement, all of which contribute to linear time complexity proportional to the array size.
+
+Operation breakdown:
+
+- Size check: O(1)
+- Last index calculation: O(1)
+- Last element save: O(1)
+- Shifting loop: O(n-1) which simplifies to O(n)
+- Each assignment: O(1)
+- Final placement: O(1)
+
+**Space Complexity**: O(1)
+
+The algorithm uses only a constant amount of extra space (three integer variables: the loop variable, the last index constant, and the temporary storage for the last element) regardless of array size, making it an in-place operation. No auxiliary data structures are allocated.
+
+**Modification**: This method modifies the original array but preserves all elements. The array size remains unchanged, and no data is lost—only the positions of elements change.
+
+**Use Cases**: Useful for implementing circular buffer operations in reverse direction, rotating through a sequence of values backwards, or shifting data in cyclic patterns where all elements must be preserved and the rotation direction matters for the application logic.
+
+---
+
+### `merge(const Array &new_array)`
+
+**Purpose**: Merges two sorted arrays into a single sorted array, combining elements from both arrays while maintaining ascending order.
+
+**Implementation Details**: The method implements a classic merge operation that combines two pre-sorted arrays into a single sorted result. The algorithm begins by validating that both the current array (`this`) and the parameter array (`new_array`) are sorted in ascending order using the `is_sorted()` method. If either array is not sorted, it throws a `runtime_error` to ensure the merge operation's correctness, as the algorithm relies on the sorted property for efficiency.
+
+The method calculates the required capacity by summing the sizes of both arrays and determines the final capacity as the maximum between this required capacity and the current array's capacity. This ensures sufficient space for all elements while potentially preserving existing capacity for future operations. A new temporary array (`merged_data`) is allocated with this calculated capacity.
+
+The core merging logic uses a three-pointer technique with variables `i`, `j`, and `k` representing indices for the current array, the new array, and the merged result respectively. The algorithm compares elements from both arrays and places the smaller element into the merged array, advancing the corresponding source pointer and the result pointer. This continues until one array is exhausted.
+
+After the main comparison loop, two cleanup loops handle any remaining elements from either array, ensuring all elements are included in the final result. Finally, the method updates the current array's properties: it deallocates the old data array, updates the capacity and size, and assigns the new merged data pointer. This effectively transforms the current array into the merged result while properly managing memory.
+
+**Time Complexity**: O(m + n)
+
+Where m is the size of the current array and n is the size of the parameter array. The algorithm performs exactly one comparison per element placement and visits each element from both arrays exactly once. The three distinct phases each contribute linear time:
+
+- Sorting validation: O(m) + O(n) for checking both arrays
+- Main merge loop: O(min(m, n)) comparisons
+- Cleanup loops: O(max(m, n) - min(m, n)) for remaining elements
+- Total element processing: O(m + n)
+
+The memory allocation and deallocation operations are considered constant time in the context of the algorithm's overall complexity.
+
+**Space Complexity**: O(m + n)
+
+The algorithm requires additional space proportional to the combined size of both arrays for the temporary merged array. This is not an in-place operation, as it needs to maintain the original arrays during the merge process before replacing the current array's data.
+
+**Exception Safety**: Throws `std::runtime_error` when either array is not sorted in ascending order. The method provides strong exception safety—if an exception is thrown during validation, the original array remains unchanged.
+
+**Modification**: This method modifies the current array by replacing its contents with the merged result. The original data is lost, and the array's capacity may increase if needed to accommodate the combined elements.
+
+**Memory Management**: The method handles dynamic memory allocation and deallocation carefully. It allocates new memory for the merged result, copies all elements, then properly deallocates the original array memory before updating the pointer, preventing memory leaks.
+
+**Parameters**:
+
+- `new_array` (const Array&): The second sorted array to merge with the current array. Passed by const reference for efficiency and to prevent modification of the source array.
+
+**Preconditions**: Both arrays must be sorted in ascending order. This is enforced at runtime with exception throwing.
+
+**Use Cases**: Essential for merge sort implementations, combining sorted datasets, merging sorted streams of data, or any scenario where two ordered collections need to be combined while preserving order. Particularly useful in divide-and-conquer algorithms and external sorting operations.
+
+---
+
 ## Current Limitations
 
 - **Fixed Capacity**: Once created, the array cannot grow beyond its initial capacity. Attempting to append beyond capacity results in an exception rather than automatic resizing.
@@ -283,4 +486,4 @@ The algorithm uses only a constant amount of extra space (three integer variable
 
 - **Basic Display**: The display method provides simple console output but doesn't support custom formatting or output to different streams.
 
-_Last Updated: 8th, October 2025_
+_Last Updated: 11th, October 2025_

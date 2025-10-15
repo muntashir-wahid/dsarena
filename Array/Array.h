@@ -22,7 +22,7 @@ public:
     // Destructor
     ~Array();
 
-    int getLength() const;
+    int get_length() const;
 
     void append(int new_element);
 
@@ -38,9 +38,19 @@ public:
 
     void set(int index, int new_element);
 
-    bool is_sorted();
+    bool is_sorted(bool ascending = true) const;
 
     void reverse();
+
+    void left_shift();
+
+    void left_rotate();
+
+    void right_shift();
+
+    void right_rotate();
+
+    void merge(const Array&);
 };
 
 #endif

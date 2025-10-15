@@ -25,7 +25,7 @@ Array::~Array() {
     delete[] data;
 }
 
-int Array::getLength() const {
+int Array::get_length() const {
   return size;
 }
 
@@ -111,9 +111,10 @@ void Array::set(int index, int new_element) {
   data[index] = new_element;
 }
 
-bool Array::is_sorted() {
+bool Array::is_sorted(bool ascending) const {
   for(int i = 0; i < size - 1; i++) {
-    if(data[i] > data[i + 1]) return false;
+    if(ascending && data[i] > data[i + 1]) return false;
+    if(!ascending && data[i] < data[i + 1]) return false;
   }
 
   return true;
@@ -133,5 +134,92 @@ void Array::reverse() {
     left++;
     right--;
   }
+}
 
+void Array::left_shift() {
+  for(int i = 0; i < size - 1; i++) {
+    data[i] = data[i + 1];
+  }
+
+  data[size - 1] = 0;
+}
+
+void Array::left_rotate() {
+  if(size <= 1) return;
+
+  int first_element = data[0];
+
+  for(int i = 0; i < size - 1; i++) {
+    data[i] = data[i + 1];
+  }
+
+  data[size - 1] = first_element;
+}
+
+void Array::right_shift() {
+  if (size == 0) return; 
+
+  for(int i = size - 1; i > 0; i--) {
+    data[i] = data[i - 1];
+  }
+
+  data[0] = 0;
+}
+
+void Array::right_rotate() {
+  if(size <= 1) return;
+
+  const int LAST_INDEX = size - 1;
+  int last_element = data[LAST_INDEX];
+
+  for(int i = LAST_INDEX; i > 0; i--) {
+    data[i] = data[i - 1];
+  }
+
+  data[0] = last_element;
+}
+
+void Array::merge(const Array &new_array) {
+  
+  if(!this->is_sorted() || !new_array.is_sorted()) {
+    throw runtime_error("Both arrays must be sorted in ascending order before merging.");
+  }
+
+  const int required_capacity = new_array.get_length() + this->size;
+  const int merged_array_capacity = required_capacity > this->capacity ? required_capacity : this->capacity;
+
+  int *merged_data = new int[merged_array_capacity];
+
+  int i = 0; 
+  int j = 0; 
+  int k = 0;
+
+  while(i < this->size && j < new_array.get_length()) {
+    if(data[i] < new_array.at(j)) {
+      merged_data[k] = data[i];
+      i++;
+      k++;
+    } else {
+      merged_data[k] = new_array.at(j);
+      j++;
+      k++;
+    }
+  }
+
+  while (i < this->size) {
+    merged_data[k] = data[i];
+    i++;
+    k++; 
+  }
+  
+  while (j < new_array.get_length()) {
+    merged_data[k] = new_array.at(j);
+    j++;
+    k++; 
+  }
+
+  this->capacity = merged_array_capacity;
+  this->size = k;
+  delete[] this->data;
+  this->data = merged_data;
 }
