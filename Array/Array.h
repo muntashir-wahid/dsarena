@@ -3,10 +3,12 @@
 
 class Array {
 private:
+    static const int NOT_FOUND = -1;
+
+protected:
     int *data;
     int size;
     int capacity;
-    static const int NOT_FOUND = -1;
 
     // Private helper methods
     bool has_capacity() const;
