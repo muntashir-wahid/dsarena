@@ -15,10 +15,6 @@ public:
     void append(int new_element);
 
     void insert(int index, int new_element);
-
-    int remove(int index);
-
-    void set(int index, int new_element);
 };
 
 #endif

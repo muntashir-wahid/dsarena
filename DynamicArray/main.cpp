@@ -9,6 +9,8 @@ int main() {
   arr.append(2);
   arr.append(4);
   arr.append(6);
+  arr.append(8);
+  arr.insert(2, 60);
 
   cout << "Length of the array: " << arr.get_length() << endl;
   arr.display();

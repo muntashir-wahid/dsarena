@@ -28,8 +28,23 @@ DynamicArray::~DynamicArray() {
 
 void DynamicArray::append(int new_element) {
   if(!has_capacity()) {
+    cout << "Array capacity short: " << capacity << endl;
     resize();
+
+    cout << "Increased capacity: " << capacity << endl;
   }
 
   Array::append(new_element);
 }
+
+void DynamicArray::insert(int index, int new_element) {
+  if(!has_capacity()) {
+    cout << "Array capacity short: " << capacity << endl;
+    resize();
+
+    cout << "Increased capacity: " << capacity << endl;
+  }
+
+  Array::insert(index, new_element);
+}
+
