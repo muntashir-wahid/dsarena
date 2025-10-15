@@ -14,9 +14,10 @@ This repository is designed to:
 
 ### Linear Data Structures
 
-| Data Structure | Status         | Description                                                                                                                                                  | Documentation                |
-| -------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------- |
-| **Array ADT**  | 🚧 In Progress | A dynamic array implementation with fixed capacity, supporting basic operations like append and display. Demonstrates memory management and RAII principles. | [View Docs](Array/README.md) |
+| Data Structure        | Status       | Description                                                                                                                                                                    | Documentation                       |
+| --------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------- |
+| **Array ADT**         | ✅ Completed | A fixed-capacity array implementation supporting comprehensive operations like insert, remove, search, and manipulation. Demonstrates memory management and RAII principles.   | [View Docs](Array/README.md)        |
+| **Dynamic Array ADT** | ✅ Completed | An auto-resizing array built through inheritance from Array ADT. Features automatic capacity expansion with amortized O(1) append performance and exponential growth strategy. | [View Docs](DynamicArray/README.md) |
 
 ## Legend
 
@@ -42,6 +43,11 @@ This repository is designed to:
 │   ├── Array.cpp        # Implementation
 │   ├── main.cpp         # Array-specific tests
 │   └── README.md        # Array documentation
+├── DynamicArray/         # Dynamic Array ADT implementation
+│   ├── DynamicArray.h   # Header file
+│   ├── DynamicArray.cpp # Implementation
+│   ├── main.cpp         # DynamicArray-specific tests
+│   └── README.md        # DynamicArray documentation
 └── README.md            # This file
 ```
 
@@ -49,4 +55,4 @@ This repository is designed to:
 
 This is a personal learning project, but suggestions and feedback are welcome!
 
-_Last Updated: 4th, October 2025_
+_Last Updated: 15th, October 2025_
