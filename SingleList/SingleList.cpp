@@ -48,6 +48,20 @@ void SingleList::append(int val) {
   
 }
 
+void SingleList::prepend(int val) {
+  Node* new_node = new Node(val, nullptr);
+
+  if(this->is_empty()) {
+    this->head = new_node;
+    this->tail = new_node;
+  } else {
+    new_node->set_next(this->head);
+    this->head = new_node;
+  }
+
+  this->size++;
+}
+
 void SingleList::display() const {
   if(this->size == 0) {
     cout << "{empty}" << endl;
@@ -68,4 +82,51 @@ void SingleList::display() const {
   cout << "}";
 
   cout << endl;
+}
+
+int SingleList::remove_first() {
+  if(this->size == 0) {
+    throw out_of_range("List is empty");
+  }
+
+  Node* to_be_deleted = this->head;
+  int deleted_node_val = to_be_deleted->get_data();
+
+  this->head = to_be_deleted->get_next();
+
+  if(this->size == 1) {
+    this->tail = nullptr;
+  }
+
+  this->size--;
+  delete to_be_deleted;
+
+  return deleted_node_val;
+}
+
+int SingleList::remove_last() {
+  if(this->size == 0) {
+    throw out_of_range("List is empty");
+  }
+
+  int deleted_node_val = this->tail->get_data();
+
+  if(this->size == 1) {
+    this->head = nullptr;
+    this->tail = nullptr;
+    this->size--;
+    return deleted_node_val;
+  }
+
+  Node* curr_node = this->head;
+  for(int i = 0; i < this->size - 2; i++) {
+    curr_node = curr_node->get_next();
+  }
+
+  delete this->tail;
+  this->size--;
+  this->tail = curr_node;
+  this->tail->set_next(nullptr);
+
+  return deleted_node_val;
 }

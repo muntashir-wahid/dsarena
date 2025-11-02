@@ -21,7 +21,13 @@ public:
 
   void append(int val);
 
+  void prepend(int val);
+
   void display() const;
+
+  int remove_first();
+
+  int remove_last();
 };
 
 #endif

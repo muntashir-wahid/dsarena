@@ -7,8 +7,13 @@ int main() {
   SingleList list(10);
   list.append(20);
   list.append(30);
+  list.prepend(2);
 
   cout << "----- First List ------" << endl;
+  list.display();
+
+  list.remove_last();
+
   list.display();
 
 

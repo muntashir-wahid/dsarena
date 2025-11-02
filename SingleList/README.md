@@ -139,6 +139,68 @@ The append operation achieves constant time performance by utilizing the tail po
 
 ---
 
+### `void prepend(int val)`
+
+**Purpose**: Adds a new element to the beginning of the list, growing the list by one element while maintaining proper linkage and making the new element the first in the sequence.
+
+**Implementation Details**: The method creates a new node with the specified value and null next pointer, then handles two distinct cases based on current list state. For empty lists, both head and tail pointers are set to the new node, establishing the list's first element identical to the append operation. For non-empty lists, the new node's next pointer is set to the current head, establishing linkage to the existing list, and the head pointer is updated to reference the new node, making it the new first element while preserving the tail pointer.
+
+The size counter is incremented in both cases, ensuring accurate size tracking. The implementation leverages the `is_empty()` method for clear conditional logic and maintains all list invariants throughout the operation, particularly ensuring that the tail pointer remains unchanged when adding to a non-empty list.
+
+**Time Complexity**: O(1)
+
+The prepend operation achieves constant time performance by directly manipulating the head pointer without requiring any traversal operations. This makes prepend as efficient as append, providing optimal performance for adding elements to either end of the list.
+
+**Memory Allocation**: Allocates `sizeof(Node)` bytes for each new element added to the list.
+
+**Invariant Maintenance**: Properly updates head and size while maintaining tail consistency across empty and non-empty list scenarios.
+
+---
+
+### `int remove_first()`
+
+**Purpose**: Removes and returns the first element from the list, reducing the list size by one while maintaining proper linkage and pointer integrity.
+
+**Implementation Details**: The method first validates that the list is not empty by checking the size, throwing an `out_of_range` exception if removal is attempted on an empty list. For valid operations, it saves a reference to the current head node and extracts its data value before any pointer manipulations. The head pointer is then updated to point to the next node in the sequence (or nullptr if removing the only element).
+
+A critical aspect of the implementation is handling the single-element list case: when `size == 1`, the tail pointer must be set to nullptr to maintain the empty-list invariant. After pointer updates, the size is decremented and the original head node is deleted to prevent memory leaks. The extracted data value is returned to the caller.
+
+**Time Complexity**: O(1)
+
+Removing from the front of a linked list is inherently constant time since it only requires updating the head pointer without any traversal operations. This makes it an optimal operation for implementing stack-like or queue-like behavior.
+
+**Exception Safety**: Throws `std::out_of_range` when attempting to remove from an empty list, providing clear error indication.
+
+**Memory Management**: Properly deallocates the removed node to prevent memory leaks while preserving all remaining list elements.
+
+**Return Value**: The integer value that was stored in the removed first element.
+
+---
+
+### `int remove_last()`
+
+**Purpose**: Removes and returns the last element from the list, reducing the list size by one while maintaining proper linkage throughout the remaining list structure.
+
+**Implementation Details**: The method first validates that the list is not empty by checking the size, throwing an `out_of_range` exception if removal is attempted on an empty list. For valid operations, it extracts the data value from the tail node early to preserve it before any modifications. The implementation handles two distinct cases based on list size.
+
+For single-element lists (`size == 1`), both head and tail pointers are set to nullptr, the size is decremented, and the method returns early with the extracted value. For multi-element lists, the method must traverse to find the second-to-last node since singly linked lists cannot traverse backwards from the tail. Using a precise loop that iterates `size - 2` times, it positions a current pointer at the node that should become the new tail.
+
+After traversal, the original tail is deleted, the size is decremented, the tail pointer is updated to the second-to-last node, and the new tail's next pointer is set to nullptr to properly terminate the list. The extracted data value is returned to the caller.
+
+**Time Complexity**: O(n)
+
+Where n is the number of elements in the list. Unlike `remove_first()`, removing the last element requires traversal to find the second-to-last node, as singly linked lists cannot traverse backwards. This linear complexity is unavoidable for this operation in singly linked list implementations.
+
+**Exception Safety**: Throws `std::out_of_range` when attempting to remove from an empty list, providing clear error indication.
+
+**Memory Management**: Properly deallocates the removed node while maintaining linkage integrity for all remaining elements.
+
+**Return Value**: The integer value that was stored in the removed last element.
+
+**Optimization**: Uses early return for single-element lists to avoid unnecessary traversal when possible.
+
+---
+
 ### `void display() const`
 
 **Purpose**: Outputs a formatted representation of the list contents to standard output, providing visual feedback for debugging and verification.
