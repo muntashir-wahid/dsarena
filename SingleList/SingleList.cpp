@@ -130,3 +130,23 @@ int SingleList::remove_last() {
 
   return deleted_node_val;
 }
+
+int SingleList::get_first() const {
+  if(this->size == 0) {
+    throw out_of_range("List is empty");
+  }
+
+  return this->head->get_data();
+}
+
+int SingleList::get_last() const {
+  if(this->size == 0) {
+    throw out_of_range("List is empty");
+  }
+
+  return this->tail->get_data();
+}
+
+// int SingleList::get(int index) const {
+
+// }

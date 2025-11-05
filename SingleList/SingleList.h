@@ -28,6 +28,24 @@ public:
   int remove_first();
 
   int remove_last();
+
+  int get_first() const;
+
+  int get_last() const;
+
+  int get(int index) const;
+
+  void set(int index, int val);
+
+  int find(int val) const;
+
+  bool contains(int val) const;
+
+  void insert(int index, int val);
+
+  int remove_at(int index);
+
+  void clear();
 };
 
 #endif
