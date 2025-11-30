@@ -478,6 +478,99 @@ The algorithm requires additional space proportional to the combined size of bot
 
 ---
 
+### `swap(int index_one, int index_two)`
+
+**Purpose**: Exchanges the values of two elements at specified indices in the array, providing a fundamental building block for sorting algorithms and array manipulation operations.
+
+**Implementation Details**: The method performs a safe element exchange operation using the classic three-step swap technique with a temporary variable. Before any swapping occurs, both indices are validated using the `is_valid_index()` helper method to ensure they correspond to existing elements in the array. If either index is invalid, the method throws an `out_of_range` exception to prevent undefined behavior.
+
+The swapping process follows the standard approach: first, the value at `index_one` is stored in a temporary variable to preserve it during the exchange. Then, the value from `index_two` is copied to `index_one`, effectively overwriting the original value (which is safely stored in the temporary variable). Finally, the temporary variable's value (original value from `index_one`) is assigned to `index_two`, completing the exchange.
+
+This implementation prioritizes safety and clarity over performance micro-optimizations like XOR swapping, making it reliable for all integer values including edge cases like identical indices or special values. The method maintains all array invariants and leaves the array in a consistent state regardless of the input indices.
+
+**Time Complexity**: O(1)
+
+The swap operation performs a constant number of operations regardless of array size or the specific indices being swapped. The complexity breakdown includes:
+
+- Index validation: O(1) for each index check
+- Temporary variable assignment: O(1)
+- Two element assignments: O(1) each
+- Total operations: Fixed number independent of array size
+
+**Space Complexity**: O(1)
+
+The algorithm uses only a single temporary integer variable for the swap operation, requiring constant additional space regardless of array size.
+
+**Exception Safety**: Throws `std::out_of_range` when either `index_one` or `index_two` is invalid (less than 0 or greater than or equal to size). The method provides strong exception safety—if an exception is thrown, the array remains unchanged.
+
+**Parameters**:
+
+- `index_one` (int): The index of the first element to swap
+- `index_two` (int): The index of the second element to swap
+
+**Edge Cases**:
+
+- **Identical indices**: When `index_one == index_two`, the method safely performs a no-op swap
+- **Boundary indices**: Works correctly for indices at array boundaries (0 and size-1)
+- **Single-element arrays**: Functions properly even with arrays containing only one element
+
+**Use Cases**: Essential for sorting algorithm implementations, array randomization, element repositioning, and general array manipulation tasks where safe element exchange is required.
+
+---
+
+### `selection_sort()`
+
+**Purpose**: Sorts the array elements in ascending order using the selection sort algorithm, providing an in-place sorting solution with predictable O(n²) performance characteristics.
+
+**Implementation Details**: The method implements the classic selection sort algorithm through a two-phase approach for each position in the array. The outer loop iterates through each position from 0 to `size - 2`, treating each position as the target for placing the next smallest element. For each position, the inner loop scans the remaining unsorted portion of the array to find the minimum element.
+
+The algorithm maintains a `min_index` variable initialized to the current outer loop position, representing the current candidate for the smallest element in the unsorted portion. The inner loop compares each subsequent element with the element at `min_index`, updating `min_index` whenever a smaller element is discovered. This linear scan ensures that `min_index` points to the actual minimum element in the unsorted region after the inner loop completes.
+
+Once the minimum element is identified, the algorithm uses the `swap()` method to exchange the minimum element with the element at the current target position. This placement ensures that the current position contains the correct element in the final sorted order. The process continues until all positions have been filled with their correct elements, resulting in a fully sorted array.
+
+The algorithm leverages the existing `swap()` method for element exchange, promoting code reuse and maintaining consistency with the class's error handling patterns. The selection sort is stable in terms of implementation correctness and provides predictable performance regardless of input data distribution.
+
+**Time Complexity**: O(n²)
+
+Where n is the current size of the array. The algorithm exhibits quadratic time complexity due to its nested loop structure:
+
+- **Outer loop**: Executes n-1 iterations (positions to fill)
+- **Inner loop**: For iteration i, performs n-i-1 comparisons
+- **Total comparisons**: Σ(n-i-1) for i from 0 to n-2 = n(n-1)/2 ≈ O(n²)
+- **Swap operations**: Exactly n-1 swaps (one per outer loop iteration)
+
+The algorithm's performance is **not input-dependent**—it performs the same number of comparisons whether the array is already sorted, reverse sorted, or randomly ordered. This predictability can be advantageous in real-time systems where consistent performance is more important than optimal average-case behavior.
+
+**Space Complexity**: O(1)
+
+Selection sort is an in-place sorting algorithm that requires only a constant amount of additional memory:
+
+- Loop variables (`i`, `j`): O(1)
+- Minimum index tracker (`min_index`): O(1)
+- Temporary variables in `swap()`: O(1)
+
+No auxiliary arrays or recursive call stacks are required, making it suitable for memory-constrained environments.
+
+**Algorithm Properties**:
+
+- **Stability**: Not stable—equal elements may change relative order during swapping
+- **Adaptive**: Not adaptive—performance doesn't improve for partially sorted inputs
+- **Online**: Not online—requires access to the entire dataset
+- **In-place**: Yes—sorts without additional memory proportional to input size
+
+**Modification**: This method modifies the original array by rearranging elements in ascending order. The array size remains unchanged, but element positions are altered to achieve sorted order.
+
+**Performance Characteristics**:
+
+- **Best case**: O(n²)—same performance even for already sorted arrays
+- **Average case**: O(n²)—consistent performance across all input distributions
+- **Worst case**: O(n²)—no degradation for reverse-sorted inputs
+- **Number of swaps**: Always n-1, making it optimal for scenarios where write operations are expensive
+
+**Use Cases**: Ideal for small arrays where simplicity is preferred over performance, educational purposes for teaching sorting concepts, situations where minimal memory usage is critical, or when the number of write operations must be minimized (since it performs the minimum possible number of swaps).
+
+---
+
 ## Current Limitations
 
 - **Fixed Capacity**: Once created, the array cannot grow beyond its initial capacity. Attempting to append beyond capacity results in an exception rather than automatic resizing.
@@ -486,4 +579,4 @@ The algorithm requires additional space proportional to the combined size of bot
 
 - **Basic Display**: The display method provides simple console output but doesn't support custom formatting or output to different streams.
 
-_Last Updated: 11th, October 2025_
+_Last Updated: 30th, November 2025_
