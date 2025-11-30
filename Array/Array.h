@@ -53,6 +53,11 @@ public:
     void right_rotate();
 
     void merge(const Array&);
+
+    void swap(int index_one, int index_two);
+
+    // Sorting Algorithms
+    void selection_sort();
 };
 
 #endif

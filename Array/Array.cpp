@@ -225,3 +225,29 @@ void Array::merge(const Array &new_array) {
   delete[] this->data;
   this->data = merged_data;
 }
+
+void Array::swap(int index_one, int index_two) {
+  if(!this->is_valid_index(index_one) || !this->is_valid_index(index_two)) {
+    throw out_of_range("Invalid index");
+  }
+
+  int temp_val = this->data[index_one];
+
+  this->data[index_one] = this->data[index_two];
+  this->data[index_two] = temp_val;
+}
+
+void Array::selection_sort() {
+
+  for(int i = 0; i < this->size - 1; i++) {
+    int min_index = i;
+
+    for(int j = i + 1; j < this->size; j++) {
+      if(this->data[j] < this->data[min_index]) {
+        min_index = j;
+      }
+    }
+
+    this->swap(i, min_index);
+  }
+}
