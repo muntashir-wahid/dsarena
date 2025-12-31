@@ -251,3 +251,13 @@ void Array::selection_sort() {
     this->swap(i, min_index);
   }
 }
+
+void Array::bubble_sort() {
+  for(int i = this->size - 1; i >= 1; i--) {
+    for(int j = 0; j < i; j++) {
+      if(data[j] > data[j + 1]) {
+        this->swap(j, j + 1);
+      }
+    }
+  }
+}

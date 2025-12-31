@@ -58,6 +58,7 @@ public:
 
     // Sorting Algorithms
     void selection_sort();
+    void bubble_sort();
 };
 
 #endif

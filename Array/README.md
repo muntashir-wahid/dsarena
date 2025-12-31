@@ -571,6 +571,58 @@ No auxiliary arrays or recursive call stacks are required, making it suitable fo
 
 ---
 
+### `bubble_sort()`
+
+**Purpose**: Sorts the array elements in ascending order using the bubble sort algorithm, implementing the classic "bubbling" technique where larger elements progressively move toward the end of the array through adjacent comparisons and swaps.
+
+**Implementation Details**: The method implements the traditional bubble sort algorithm through a nested loop structure that repeatedly passes through the array, comparing adjacent elements and swapping them if they are in the wrong order. The outer loop controls the number of passes, starting from `size - 1` and decrementing down to 1, representing the boundary of the unsorted portion of the array. Each pass ensures that the largest unsorted element "bubbles up" to its correct position at the end.
+
+The inner loop performs the actual comparisons, iterating from index 0 to the current value of `i - 1`, comparing each element `data[j]` with its adjacent successor `data[j + 1]`. When an element is greater than its neighbor (`data[j] > data[j + 1]`), the algorithm invokes the `swap()` method to exchange their positions, gradually moving larger elements toward the end of the array.
+
+The algorithm's efficiency comes from the reduction of the comparison range with each pass. After the first pass, the largest element is guaranteed to be in its final position, so the second pass only needs to consider the first `n-1` elements. This optimization continues with each subsequent pass, progressively reducing the working area and avoiding unnecessary comparisons with already-sorted elements.
+
+The implementation leverages the existing `swap()` method for element exchange, maintaining consistency with the class's established patterns and error handling mechanisms. The bubble sort algorithm is particularly intuitive as it mimics the natural process of bubbles rising to the surface, making it an excellent educational tool for understanding sorting concepts.
+
+**Time Complexity**: O(n²)
+
+Where n is the current size of the array. The algorithm exhibits quadratic time complexity due to its nested loop structure:
+
+- **Outer loop**: Executes n-1 iterations (passes through the array)
+- **Inner loop**: For iteration i, performs i comparisons (decreasing with each pass)
+- **Total comparisons**: Σ(i) for i from 1 to n-1 = n(n-1)/2 ≈ O(n²)
+- **Swap operations**: Variable, ranging from 0 (sorted array) to O(n²) (reverse-sorted array)
+
+The algorithm's worst-case performance occurs when the array is sorted in reverse order, requiring the maximum number of swaps. The best-case scenario (already sorted array) still requires O(n²) comparisons in this implementation, though it performs zero swaps. Unlike selection sort, bubble sort's number of swaps is input-dependent, potentially performing many more exchanges in practice.
+
+**Space Complexity**: O(1)
+
+Bubble sort is an in-place sorting algorithm that requires only a constant amount of additional memory:
+
+- Loop variables (`i`, `j`): O(1)
+- Temporary variables in `swap()`: O(1)
+
+No auxiliary arrays or recursive call stacks are required, making it suitable for memory-constrained environments where additional space allocation is not feasible.
+
+**Algorithm Properties**:
+
+- **Stability**: Stable—equal elements maintain their relative order due to the strict inequality check (`>`)
+- **Adaptive**: Not adaptive in this implementation—performance doesn't improve significantly for partially sorted inputs
+- **Online**: Not online—requires access to the entire dataset
+- **In-place**: Yes—sorts without additional memory proportional to input size
+
+**Modification**: This method modifies the original array by rearranging elements in ascending order. The array size remains unchanged, but element positions are altered to achieve sorted order through the progressive bubbling effect.
+
+**Performance Characteristics**:
+
+- **Best case**: O(n²) comparisons, O(1) swaps—occurs when array is already sorted
+- **Average case**: O(n²) comparisons and swaps—typical performance for randomly ordered data
+- **Worst case**: O(n²) comparisons and swaps—occurs when array is reverse-sorted
+- **Number of swaps**: Variable from 0 to O(n²), making it potentially inefficient for write-expensive operations
+
+**Use Cases**: Primarily educational for teaching sorting algorithm concepts and demonstrating the bubbling effect, suitable for very small datasets where simplicity outweighs performance concerns, useful in situations where algorithm stability is required and the dataset is guaranteed to be small, or when demonstrating the fundamental comparison-based sorting approach to students learning algorithmic concepts.
+
+---
+
 ## Current Limitations
 
 - **Fixed Capacity**: Once created, the array cannot grow beyond its initial capacity. Attempting to append beyond capacity results in an exception rather than automatic resizing.

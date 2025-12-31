@@ -16,11 +16,8 @@ int main() {
     arr.display();
 
     cout << "---- First Array before sort ----" << endl;
-    arr.selection_sort();
+    arr.bubble_sort();
     arr.display();
-
-
-
 
     return 0;
 }
