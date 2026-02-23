@@ -164,3 +164,21 @@ int SingleList::get(int index) const {
 
   return curr_node->get_data();
 }
+
+void SingleList::set(int index, int val) {
+  if(this->is_empty()) {
+    throw out_of_range("List is empty");
+  }
+
+  if(index >= this->size || index < 0) {
+    throw out_of_range("Out of range");
+  }
+
+  Node* curr_node = this->head;
+  
+  for(int i = 0; i < index; i++) {
+    curr_node = curr_node->get_next();
+  }
+
+  curr_node->set_data(val);
+}

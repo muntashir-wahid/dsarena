@@ -27,9 +27,9 @@ int main() {
   for(int i = 1; i <= 10; i++) {
     list_two.append(i * 5);
   }
+  list_two.set(0, 10);
   list_two.display();
-  cout << list_two.get_size() << endl;
-  cout << list_two.get(4) << endl;
+  cout << "Current size of the list: " << list_two.get_size() << endl;
 
   return 0;
 }

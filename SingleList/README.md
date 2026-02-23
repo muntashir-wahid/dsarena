@@ -245,6 +245,36 @@ Where n is the value of the index parameter. The method must traverse from the h
 
 **Comparison to Array Access**: Unlike array structures that provide O(1) random access through pointer arithmetic, linked list indexed access requires sequential traversal, making this operation inherently slower for arbitrary position access. This performance characteristic is fundamental to the linked list data structure and represents the trade-off for efficient insertion and deletion operations.
 
+---
+
+### `void set(int index, int val)`
+
+**Purpose**: Modifies the value stored at the specified index position in the list, replacing the existing element with a new value while maintaining the list structure and linkage intact.
+
+**Implementation Details**: The method first validates that the list is not empty by checking the size, throwing an `out_of_range` exception if modification is attempted on an empty list. It then performs comprehensive bounds checking to ensure the provided index falls within the valid range [0, size-1], throwing an exception for both negative indices and indices that exceed the list bounds.
+
+For valid operations, the method employs the same linear traversal strategy as the `get()` method, starting from the head node and using a counter-controlled loop that iterates exactly `index` times to advance through the linked structure. Once the target node is located, the method updates the node's data value using the node's setter method, leaving all pointers and structural properties unchanged.
+
+The implementation follows a read-modify pattern without any memory allocation or deallocation. Unlike insertion or removal operations that restructure the list, `set()` performs a pure in-place modification, updating only the data content of an existing node while preserving all linkage relationships. The size remains unchanged, and no pointer updates are necessary.
+
+**Time Complexity**: O(n)
+
+Where n is the value of the index parameter. The method must traverse from the head node through the linked structure, visiting each intermediate node until reaching the target position. In the worst case (modifying the last element at index size-1), the traversal must visit nearly all nodes in the list, resulting in linear time complexity proportional to the index value.
+
+**Best Case Performance**: O(1) when modifying the first element (index 0), though the implementation still performs validation checks before the minimal traversal.
+
+**Worst Case Performance**: O(n) when modifying the last element, requiring traversal through the entire list structure.
+
+**Exception Safety**: Throws `std::out_of_range` when attempting to modify elements in an empty list or when the provided index falls outside the valid bounds [0, size-1]. The method provides strong exception guarantee—if an exception is thrown, the list remains completely unchanged with no side effects.
+
+**Modification Semantics**: This method strictly modifies existing elements and will never add new elements to the list. Attempting to set at `index == size` (one past the last valid index) will throw an exception, as this position does not exist. For adding elements, use the `append()`, `prepend()`, or `insert()` methods instead.
+
+**Const Correctness**: The method is not marked const as it modifies the data content of list nodes, though it preserves the structural integrity of the list.
+
+**Use Cases**: Ideal for updating inventory counts, correcting data entry errors, implementing swap operations in sorting algorithms, replacing placeholder values with computed results, or any scenario requiring in-place modification of list elements without structural changes. The operation is particularly useful when the list structure must remain stable but content needs updating.
+
+**Design Consistency**: The method mirrors the interface and validation logic of `get()`, providing intuitive paired operations for read and write access at indexed positions, maintaining symmetry in the ADT interface.
+
 ## Use Cases and Applications
 
 ### **When to Use a Singly Linked List**
@@ -303,4 +333,4 @@ Maintaining an explicit size counter provides multiple advantages:
 
 This Singly Linked List implementation provides a solid foundation for understanding pointer-based data structures while demonstrating professional-quality C++ programming practices. The combination of performance optimization, memory safety, and clear interface design makes it suitable for both educational purposes and practical applications requiring dynamic, efficient list management.
 
-_Last Updated: 23rd, January 2026_
+_Last Updated: 23rd, February 2026_
