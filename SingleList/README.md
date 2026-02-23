@@ -217,6 +217,34 @@ Where n is the number of elements in the list. Each node must be visited exactly
 
 **Const Correctness**: The method is marked const as it only reads list data without modification, allowing it to be called on const SingleList objects.
 
+---
+
+### `int get(int index) const`
+
+**Purpose**: Retrieves the value stored at the specified index position in the list, providing zero-based indexed access to list elements without modifying the list structure.
+
+**Implementation Details**: The method first validates that the list is not empty by checking the size, throwing an `out_of_range` exception if access is attempted on an empty list. It then performs comprehensive bounds checking to ensure the provided index falls within the valid range [0, size-1], throwing an exception for both negative indices and indices that exceed the list bounds.
+
+For valid operations, the method employs a linear traversal strategy starting from the head node. Using a counter-controlled loop that iterates exactly `index` times, it advances a current pointer through the linked structure, following the next pointers from node to node. This traversal positions the pointer at the desired index location, after which the method extracts and returns the data value from the target node.
+
+The implementation maintains const correctness as it performs read-only access without modifying any list state, linkage, or node contents. The traversal pattern is straightforward and reliable, visiting exactly the number of nodes necessary to reach the target position.
+
+**Time Complexity**: O(n)
+
+Where n is the value of the index parameter. The method must traverse from the head node through the linked structure, visiting each intermediate node until reaching the target position. In the worst case (accessing the last element at index size-1), the traversal must visit nearly all nodes in the list, resulting in linear time complexity proportional to the index value.
+
+**Best Case Performance**: O(1) when accessing the first element (index 0), as no traversal is required beyond the initial head access.
+
+**Worst Case Performance**: O(n) when accessing the last element, requiring traversal through the entire list structure.
+
+**Exception Safety**: Throws `std::out_of_range` when attempting to access elements from an empty list or when the provided index falls outside the valid bounds [0, size-1], providing clear error indication for boundary violations.
+
+**Return Value**: The integer value stored at the specified index position in the list.
+
+**Index Convention**: Uses zero-based indexing where index 0 represents the first element (head) and index size-1 represents the last element (tail).
+
+**Comparison to Array Access**: Unlike array structures that provide O(1) random access through pointer arithmetic, linked list indexed access requires sequential traversal, making this operation inherently slower for arbitrary position access. This performance characteristic is fundamental to the linked list data structure and represents the trade-off for efficient insertion and deletion operations.
+
 ## Use Cases and Applications
 
 ### **When to Use a Singly Linked List**
@@ -275,4 +303,4 @@ Maintaining an explicit size counter provides multiple advantages:
 
 This Singly Linked List implementation provides a solid foundation for understanding pointer-based data structures while demonstrating professional-quality C++ programming practices. The combination of performance optimization, memory safety, and clear interface design makes it suitable for both educational purposes and practical applications requiring dynamic, efficient list management.
 
-_Last Updated: 2nd, November 2025_
+_Last Updated: 23rd, January 2026_

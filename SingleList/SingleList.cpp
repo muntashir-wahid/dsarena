@@ -63,7 +63,7 @@ void SingleList::prepend(int val) {
 }
 
 void SingleList::display() const {
-  if(this->size == 0) {
+  if(this->is_empty()) {
     cout << "{empty}" << endl;
     return;
   }
@@ -85,7 +85,7 @@ void SingleList::display() const {
 }
 
 int SingleList::remove_first() {
-  if(this->size == 0) {
+  if(this->is_empty()) {
     throw out_of_range("List is empty");
   }
 
@@ -105,7 +105,7 @@ int SingleList::remove_first() {
 }
 
 int SingleList::remove_last() {
-  if(this->size == 0) {
+  if(this->is_empty()) {
     throw out_of_range("List is empty");
   }
 
@@ -132,7 +132,7 @@ int SingleList::remove_last() {
 }
 
 int SingleList::get_first() const {
-  if(this->size == 0) {
+  if(this->is_empty()) {
     throw out_of_range("List is empty");
   }
 
@@ -140,13 +140,27 @@ int SingleList::get_first() const {
 }
 
 int SingleList::get_last() const {
-  if(this->size == 0) {
+  if(this->is_empty()) {
     throw out_of_range("List is empty");
   }
 
   return this->tail->get_data();
 }
 
-// int SingleList::get(int index) const {
+int SingleList::get(int index) const {
+  if(this->is_empty()) {
+    throw out_of_range("List is empty");
+  }
 
-// }
+  if(index >= this->size || index < 0) {
+    throw out_of_range("Out of range");
+  }
+
+  Node* curr_node = this->head;
+  
+  for(int i = 0; i < index; i++) {
+    curr_node = curr_node->get_next();
+  }
+
+  return curr_node->get_data();
+}
