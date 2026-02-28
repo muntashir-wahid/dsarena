@@ -231,3 +231,32 @@ void SingleList::insert(int index, int val) {
   curr_node->set_next(new_node);
   this->size++;
 }
+
+int SingleList::remove_at(int index) {
+  if(index >= this->size || index < 0) {
+    throw out_of_range("Out of range");
+  }
+
+  if(index == 0) {
+    return this->remove_first();
+  }
+
+  if(index == this->size - 1) {
+    return this->remove_last();
+  }
+
+  Node* curr_node = this->head;
+
+  for(int i = 0; i < index - 1; i++) {
+    curr_node = curr_node->get_next();
+  }
+
+  Node* deleted_node = curr_node->get_next();
+  int deleted_val = deleted_node->get_data();
+
+  curr_node->set_next(deleted_node->get_next());
+
+  delete deleted_node;
+  this->size--;
+  return deleted_val;
+}

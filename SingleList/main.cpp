@@ -25,12 +25,12 @@ int main() {
     list_two.append(i * 5);
   }
 
-  cout << "----- Second List Before Insert ------" << endl;
+  cout << "----- Second List Before Remove ------" << endl;
   list_two.display();
 
-  list_two.insert(1, 100);
+  list_two.remove_at(0);
 
-  cout << "----- Second List After Insert ------" << endl;
+  cout << "----- Second List After Remove ------" << endl;
   list_two.display();
 
   return 0;

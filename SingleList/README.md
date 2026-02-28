@@ -359,6 +359,48 @@ Where n is the value of the index parameter. The method must traverse from the h
 
 **Design Consistency**: The method follows established patterns including comprehensive bounds checking with exception throwing for invalid indices, delegation to specialized methods for edge cases (DRY principle), consistent use of `this->` prefix notation, proper size tracking across all code paths (including delegated methods), and clear separation between validation, traversal, and modification phases. The implementation demonstrates advanced design through method reuse rather than duplicating prepend/append logic, making the codebase more maintainable and reducing potential for bugs.
 
+---
+
+### `int remove_at(int index)`
+
+**Purpose**: Removes and returns the element at the specified index position, shifting all subsequent elements one position to the left and decreasing the list size by one. This operation enables flexible list manipulation by allowing removal at any valid position within the list structure while preserving the removed element's value for the caller.
+
+**Implementation Details**: The method first performs comprehensive bounds checking to ensure the provided index falls within the valid removal range [0, size-1], which represents all existing element positions. Unlike the `insert()` method that accepts [0, size] to allow end insertion, removal operations can only target existing elements, making size itself an invalid index. If the index is out of bounds (negative or greater than or equal to size), the method throws an `out_of_range` exception to signal invalid operation, ensuring no attempt is made to remove non-existent elements.
+
+The implementation employs the same strategic delegation pattern as `insert()` to handle edge cases efficiently and maintain code consistency. For removal at index 0 (first element), the method delegates directly to the existing `remove_first()` method, leveraging its optimized O(1) implementation and ensuring consistent behavior for head removal across all scenarios. This delegation also ensures proper tail pointer management when removing the only element in the list. Similarly, for removal at index equal to size-1 (last element), the method delegates to `remove_last()`, which handles tail removal and correctly manages the necessary traversal to find the predecessor node that becomes the new tail.
+
+These delegations follow the DRY (Don't Repeat Yourself) principle, avoiding code duplication and centralizing edge case handling in specialized methods. Both delegated methods return the removed value, which `remove_at()` propagates directly to its caller, maintaining consistent interface semantics across all removal operations.
+
+For middle removals (0 < index < size-1), the method performs the deletion operation directly. It traverses the list to locate the predecessor node—the node immediately before the target position—using a precise counter-controlled loop that iterates exactly index-1 times. This positions a current pointer at the node whose next pointer references the element to be removed.
+
+The removal process employs a careful sequence to prevent memory leaks and maintain list integrity. First, it saves a reference to the target node (the one to be deleted) by accessing the predecessor's next pointer. Second, it extracts the data value from this target node before any structural modifications, preserving the value for return. Third, it updates the predecessor's next pointer to bypass the target node, linking directly to the node that follows the target. This effectively removes the target from the linked chain. Finally, it deletes the target node to free memory, decrements the size counter to reflect the removal, and returns the extracted value to the caller.
+
+This implementation strategy ensures all list invariants are maintained throughout the operation. The head and tail pointers remain valid (updated by delegated methods when necessary), the size accurately reflects element count, and all pointer linkages remain consistent with no dangling references or lost nodes.
+
+**Time Complexity**: O(n)
+
+Where n is the value of the index parameter or the number of elements in the list. The method must traverse from the head node through the linked structure to reach the removal point's predecessor, visiting each intermediate node until positioning correctly. The traversal cost dominates the operation's time complexity, as pointer manipulation, value extraction, and node deletion are constant-time operations.
+
+**Best Case Performance**: O(1) when removing at index 0, as the operation delegates to `remove_first()` which performs head removal without any traversal. This represents optimal performance for beginning-of-list removal.
+
+**Worst Case Performance**: O(n) when removing at index == size-1 (last element), as the operation delegates to `remove_last()` which must traverse the entire list to find the second-to-last node that becomes the new tail. This traversal is unavoidable in singly linked lists due to the unidirectional nature of the next pointers.
+
+**Average Case Performance**: O(n/2) for random removal positions, requiring traversal through approximately half the list on average to reach the predecessor. This simplifies to O(n) in asymptotic analysis.
+
+**Exception Safety**: Throws `std::out_of_range` when the provided index falls outside the valid removal range [0, size-1]. The exception is thrown before any memory access, traversal, or pointer manipulation occurs, providing strong exception guarantee—if removal fails, the list remains completely unchanged with no side effects or resource leaks.
+
+**Valid Index Range**: The method accepts indices from 0 to size-1 (inclusive), representing all existing element positions. This range matches `get()` and `set()` operations as all three methods operate on existing elements. Unlike `insert()` which accepts [0, size] to allow insertion after the last element, removal cannot target a position beyond the last existing element since there is nothing to remove at that position.
+
+**Memory Management**: Deallocates `sizeof(Node)` bytes for each removal through the `delete` operator, returning memory to the heap and preventing memory leaks. The deallocation occurs either within the delegated methods (`remove_first()` or `remove_last()`) or in the middle removal path, but only once per removal operation. The method ensures complete cleanup by holding no references to freed memory after the delete operation.
+
+**Pointer Manipulation Safety**: The removal process carefully sequences operations to prevent undefined behavior. By saving the target node reference before modifying pointer chains, the implementation ensures it can safely access the node for value extraction and eventual deletion. By extracting the data value before deletion, it avoids accessing deallocated memory. By updating the predecessor's next pointer before deleting the target, it maintains list continuity and prevents lost references to subsequent nodes. This ordering is critical for correctness and safety.
+
+**Return Value Semantics**: Returns the integer value that was stored in the removed element, providing the caller with the data content before it is destroyed. This return value enables patterns like "remove and process" where the caller needs to know what was removed, supporting use cases such as undo operations, logging deleted values, or re-inserting removed elements elsewhere. The return value matches the semantics of `remove_first()` and `remove_last()`, maintaining interface consistency across all removal operations.
+
+**Inverse Operation Property**: For any non-empty list configuration and valid index k where 0 ≤ k < size, if `val = list.remove_at(k)` is executed followed by `list.insert(k, val)`, the list is restored to its original state. This inverse relationship demonstrates the methods' complementary nature and supports implementation of operations like "swap with temporary removal" or "extract, modify, and reinsert" patterns.
+
+**Use Cases**: Essential for implementing dynamic list editing in applications where users can delete items at arbitrary positions (task lists, shopping lists), removing elements that match certain criteria after locating them with `find()`, implementing list-based algorithms that require removal at computed positions (removing medians, outliers, or specific ranked elements), building undo/redo functionality where removed elements must be preserved, cleaning up specific positions in data processing pipelines, implementing deletion in sorted lists while maintaining order, removing elements at positions determined by user selection or algorithmic computation, and scenarios requiring fine-grained control over element removal beyond simple first/last removal operations.
+
 ## Use Cases and Applications
 
 ### **When to Use a Singly Linked List**
