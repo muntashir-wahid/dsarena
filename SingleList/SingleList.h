@@ -42,8 +42,6 @@ public:
   void insert(int index, int val);
 
   int remove_at(int index);
-
-  void clear();
 };
 
 #endif
