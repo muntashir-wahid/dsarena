@@ -39,8 +39,6 @@ public:
 
   int find(int val) const;
 
-  bool contains(int val) const;
-
   void insert(int index, int val);
 
   int remove_at(int index);

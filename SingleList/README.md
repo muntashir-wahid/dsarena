@@ -317,6 +317,48 @@ Where n is the number of elements in the list. The method implements a linear se
 
 **Design Consistency**: The method follows established patterns from the codebase including comprehensive empty-list checks, consistent use of `this->` prefix notation, const correctness for read-only operations, and clear return value semantics. The traversal pattern mirrors other linear operations like `display()`, and the validation approach aligns with other query methods in the interface.
 
+---
+
+### `void insert(int index, int val)`
+
+**Purpose**: Inserts a new element with the specified value at the designated index position, shifting all subsequent elements one position to the right and increasing the list size by one. This operation enables flexible list construction by allowing insertion at any valid position within the list structure.
+
+**Implementation Details**: The method first performs comprehensive bounds checking to ensure the provided index falls within the valid insertion range [0, size], inclusive. Unlike indexed access methods that restrict to [0, size-1], the insert operation allows insertion at position size, which effectively appends to the end of the list. If the index is out of bounds (negative or greater than size), the method throws an `out_of_range` exception to signal invalid operation.
+
+The implementation employs a strategic delegation pattern to handle edge cases efficiently. For insertion at index 0 (beginning of list), the method delegates directly to the existing `prepend()` method, leveraging its optimized O(1) implementation and ensuring consistent behavior for head insertion across all scenarios, including empty lists. Similarly, for insertion at index equal to size (end of list), the method delegates to `append()`, which handles tail insertion efficiently and correctly manages both empty and non-empty list cases. These delegations follow the DRY (Don't Repeat Yourself) principle, avoiding code duplication and centralize edge case handling in specialized methods.
+
+For middle insertions (0 < index < size), the method performs the insertion operation directly. It creates a new node with the specified value and null next pointer, then traverses the list to locate the predecessor node—the node immediately before the insertion position. Using a precise counter-controlled loop that iterates exactly index-1 times, it positions a current pointer at this predecessor node. The insertion is completed through a two-step pointer manipulation: first, the new node's next pointer is set to reference the predecessor's current successor (the node that will follow the new node), then the predecessor's next pointer is updated to reference the new node, effectively splicing the new node into the list structure. Finally, the size counter is incremented to reflect the additional element.
+
+This implementation strategy optimizes memory allocation by only creating new nodes when actually needed—the edge case delegations to `prepend()` and `append()` handle their own allocations, so the middle insertion path allocates only when it will be used. The method maintains all list invariants throughout the operation, ensuring head, tail, and size remain consistent, and all pointer linkages remain valid.
+
+**Time Complexity**: O(n)
+
+Where n is the value of the index parameter. The method must traverse from the head node through the linked structure to reach the insertion point, visiting each intermediate node until positioning at the predecessor location. The traversal cost dominates the operation's time complexity, as pointer manipulation and node creation are constant-time operations.
+
+**Best Case Performance**: O(1) when inserting at index 0, as the operation delegates to `prepend()` which performs head insertion without any traversal. This represents optimal performance for beginning-of-list insertion.
+
+**Worst Case Performance**: O(n) when inserting at index == size, as the operation delegates to `append()` which directly manipulates the tail pointer. While no traversal occurs due to tail pointer optimization, the worst case for a general insertion-at-index operation would be at position size-1, requiring traversal through nearly the entire list to find the predecessor.
+
+**Average Case Performance**: O(n/2) for random insertion positions, requiring traversal through approximately half the list on average. This simplifies to O(n) in asymptotic analysis.
+
+**Exception Safety**: Throws `std::out_of_range` when the provided index falls outside the valid insertion range [0, size]. The exception is thrown before any memory allocation or pointer manipulation occurs, providing strong exception guarantee—if insertion fails, the list remains completely unchanged with no side effects or resource leaks.
+
+**Valid Index Range**: The method accepts indices from 0 to size (inclusive), which is one position beyond the last element's index. This extended range is intentional and standard for insertion operations: index 0 inserts before the first element, index size inserts after the last element, and indices in between insert at their respective positions while shifting subsequent elements rightward. This range differs from `get()` and `set()` which restrict to [0, size-1] as they operate on existing elements only.
+
+**Memory Allocation**: Allocates `sizeof(Node)` bytes for each insertion through dynamic memory allocation on the heap, growing list capacity as needed without predefined limits. The allocation occurs either within the delegated methods (`prepend()` or `append()`) or in the middle insertion path, but only once per insertion operation.
+
+**Pointer Manipulation Safety**: The two-step pointer rewiring process (new node points to successor, then predecessor points to new node) is critical for maintaining list integrity. This order ensures the existing list structure remains intact until the final pointer update, preventing loss of references to subsequent nodes. Reversing this order would break the chain and lose access to all nodes after the insertion point.
+
+**Relationship to Other Methods**: The insert operation provides a generalized interface that encompasses both `prepend()` and `append()` functionality as special cases, while also enabling intermediate insertions that those methods cannot perform. Specifically: `insert(0, val)` is semantically equivalent to `prepend(val)`, `insert(size, val)` is semantically equivalent to `append(val)`, and `insert(k, val)` for 0 < k < size provides unique functionality for middle insertion.
+
+**Comparison to set()**: While both methods accept an index and value, their semantics differ fundamentally. The `set()` method replaces an existing element without changing list size or structure (modification operation), whereas `insert()` adds a new element, increases size, and shifts subsequent elements (structural operation). This distinction is critical: attempting to insert at a position to "replace" an element would result in two elements at that logical position rather than one modified element.
+
+**Use Cases**: Essential for maintaining sorted lists by inserting elements at computed positions, implementing priority queue operations where elements are inserted based on priority values, building lists with specific ordering requirements, inserting elements at user-specified positions in applications like playlist managers or task schedulers, implementing insertion sort algorithms, constructing lists incrementally where insertion position is determined dynamically, and scenarios requiring fine-grained control over element positioning beyond simple append/prepend operations. The method is particularly valuable when list elements must maintain specific ordering or when inserting into the middle of existing sequences.
+
+**Performance Considerations**: For frequent insertions at arbitrary positions, singly linked lists provide superior performance compared to array-based structures. While both have O(n) time complexity for average-case insertion, linked lists avoid the costly element shifting operations that arrays must perform, instead requiring only pointer updates. However, if insertions are predominantly at index 0 or the end, consider using `prepend()` or `append()` directly for clearer intent and guaranteed optimal performance without the overhead of conditional checks.
+
+**Design Consistency**: The method follows established patterns including comprehensive bounds checking with exception throwing for invalid indices, delegation to specialized methods for edge cases (DRY principle), consistent use of `this->` prefix notation, proper size tracking across all code paths (including delegated methods), and clear separation between validation, traversal, and modification phases. The implementation demonstrates advanced design through method reuse rather than duplicating prepend/append logic, making the codebase more maintainable and reducing potential for bugs.
+
 ## Use Cases and Applications
 
 ### **When to Use a Singly Linked List**

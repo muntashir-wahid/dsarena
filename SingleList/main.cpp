@@ -19,17 +19,19 @@ int main() {
 
   SingleList list_two;
 
-
-  cout << "----- Second List ------" << endl;
   list_two.display();
 
   for(int i = 1; i <= 10; i++) {
     list_two.append(i * 5);
   }
 
+  cout << "----- Second List Before Insert ------" << endl;
   list_two.display();
 
-  cout << list_two.find(26);
+  list_two.insert(1, 100);
+
+  cout << "----- Second List After Insert ------" << endl;
+  list_two.display();
 
   return 0;
 }

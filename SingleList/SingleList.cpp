@@ -197,10 +197,37 @@ int SingleList::find(int val) const {
     }
 
     curr_node = curr_node->get_next();
-
     index++;
   }
 
-
   return -1;
+}
+
+void SingleList::insert(int index, int val) {
+  if(index > this->size || index < 0) {
+    throw out_of_range("Out of range");
+  }
+
+  if(index == 0) {
+    this->prepend(val);
+
+    return;
+  }
+
+  if(index == this->get_size()) {
+    this->append(val);
+
+    return;
+  }
+
+  Node* new_node = new Node(val, nullptr);
+  Node* curr_node = this->head;
+
+  for(int i = 0; i < index - 1; i++) {
+    curr_node = curr_node->get_next();
+  }
+
+  new_node->set_next(curr_node->get_next());
+  curr_node->set_next(new_node);
+  this->size++;
 }
