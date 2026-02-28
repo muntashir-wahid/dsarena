@@ -14,10 +14,11 @@ This repository is designed to:
 
 ### Linear Data Structures
 
-| Data Structure        | Status       | Description                                                                                                                                                                    | Documentation                       |
-| --------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------- |
-| **Array ADT**         | ✅ Completed | A fixed-capacity array implementation supporting comprehensive operations like insert, remove, search, and manipulation. Demonstrates memory management and RAII principles.   | [View Docs](Array/README.md)        |
-| **Dynamic Array ADT** | ✅ Completed | An auto-resizing array built through inheritance from Array ADT. Features automatic capacity expansion with amortized O(1) append performance and exponential growth strategy. | [View Docs](DynamicArray/README.md) |
+| Data Structure             | Status       | Description                                                                                                                                                                       | Documentation                       |
+| -------------------------- | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
+| **Array ADT**              | ✅ Completed | A fixed-capacity array implementation supporting comprehensive operations like insert, remove, search, and manipulation. Demonstrates memory management and RAII principles.      | [View Docs](Array/README.md)        |
+| **Dynamic Array ADT**      | ✅ Completed | An auto-resizing array built through inheritance from Array ADT. Features automatic capacity expansion with amortized O(1) append performance and exponential growth strategy.    | [View Docs](DynamicArray/README.md) |
+| **Singly Linked List ADT** | ✅ Completed | A pointer-based linked list with head and tail optimization. Supports dynamic growth, O(1) prepend/append operations, and comprehensive index-based and value-based manipulation. | [View Docs](SingleList/README.md)   |
 
 ## Legend
 
@@ -48,6 +49,13 @@ This repository is designed to:
 │   ├── DynamicArray.cpp # Implementation
 │   ├── main.cpp         # DynamicArray-specific tests
 │   └── README.md        # DynamicArray documentation
+├── SingleList/           # Singly Linked List ADT implementation
+│   ├── SingleList.h     # Header file
+│   ├── SingleList.cpp   # Implementation
+│   ├── Node.h           # Node class header
+│   ├── Node.cpp         # Node class implementation
+│   ├── main.cpp         # SingleList-specific tests
+│   └── README.md        # SingleList documentation
 └── README.md            # This file
 ```
 
@@ -55,4 +63,4 @@ This repository is designed to:
 
 This is a personal learning project, but suggestions and feedback are welcome!
 
-_Last Updated: 15th, October 2025_
+_Last Updated: 28th February, 2026_
