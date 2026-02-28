@@ -275,6 +275,48 @@ Where n is the value of the index parameter. The method must traverse from the h
 
 **Design Consistency**: The method mirrors the interface and validation logic of `get()`, providing intuitive paired operations for read and write access at indexed positions, maintaining symmetry in the ADT interface.
 
+---
+
+### `int find(int val) const`
+
+**Purpose**: Searches the list for the first occurrence of a specified value and returns its zero-based index position, providing a mechanism to locate elements based on their content rather than position.
+
+**Implementation Details**: The method first validates that the list is not empty by checking with the `is_empty()` helper function, immediately returning -1 if the list contains no elements. This early-exit strategy avoids unnecessary initialization and traversal operations when the search space is empty, providing a graceful response rather than throwing an exception.
+
+For non-empty lists, the method employs a sequential search strategy that examines each node in order from head to tail. It initializes a current pointer to the head of the list and an index counter starting at zero. The algorithm then enters a traversal loop that continues until either the target value is found or all nodes have been examined.
+
+During each iteration, the method compares the current node's data value with the search target using the node's getter method. If a match is found, the method immediately returns the current index, implementing an early-exit optimization that avoids unnecessary examination of remaining nodes. If no match is found, the algorithm advances both the current pointer to the next node and increments the index counter, maintaining synchronization between position tracking and traversal progress.
+
+If the traversal completes without finding a match—indicated by the current pointer becoming nullptr after examining the final node—the method returns -1 to signal that the target value does not exist in the list. This sentinel value convention is widely recognized in programming as indicating "not found" and allows the caller to distinguish between finding an element at index 0 (a valid position) and not finding the element at all.
+
+The implementation leverages the `is_empty()` method for consistent empty-list handling and uses `this->` prefix notation to maintain stylistic consistency with all other methods in the class. The const qualifier ensures the method performs read-only operations without modifying any list state, node contents, or linkage relationships.
+
+**Time Complexity**: O(n)
+
+Where n is the number of elements in the list. The method implements a linear search algorithm that may need to examine each node sequentially until the target is found or all nodes have been checked. In the worst case (when the element doesn't exist or is located at the end of the list), the algorithm must traverse the entire list structure, visiting every node exactly once, resulting in linear time complexity proportional to list size.
+
+**Best Case Performance**: O(1) when the target value is located in the first node (head position), allowing immediate return after a single comparison without any traversal. This represents the optimal scenario for the search operation.
+
+**Average Case Performance**: O(n/2) when the target value is randomly distributed throughout the list, requiring examination of approximately half the nodes on average. This simplifies to O(n) in asymptotic analysis.
+
+**Worst Case Performance**: O(n) when the target value is located at the tail position or doesn't exist in the list, requiring complete traversal through all n nodes before returning a result.
+
+**Search Strategy**: Implements linear search (also known as sequential search), which is the only viable search strategy for unsorted, linked-based structures. Unlike array-based structures that can leverage binary search on sorted data, singly linked lists lack the O(1) random access capability required for divide-and-conquer search algorithms, making linear search the optimal choice for this data structure.
+
+**Return Value Semantics**: Returns a non-negative integer representing the zero-based index (0 to size-1) of the first occurrence of the target value if found. Returns -1 as a sentinel value if the target value does not exist in the list or if the list is empty. The -1 return value is a widely-adopted convention in programming for indicating "not found" status, allowing callers to easily check for search failure using simple comparison operations.
+
+**First Occurrence Behavior**: When multiple nodes contain the same value, the method returns the index of the first (leftmost) occurrence encountered during head-to-tail traversal. This behavior provides predictable and consistent results, though callers requiring all occurrences or the last occurrence would need to implement alternative search strategies or continue searching beyond the first match.
+
+**Const Correctness**: The method is properly marked const as it performs pure read-only operations, examining node values without modifying any data, pointers, or structural properties of the list. This allows the method to be safely called on const SingleList objects and clearly documents its non-mutating nature in the interface.
+
+**Empty List Handling**: Rather than throwing an exception when called on an empty list, the method gracefully returns -1, treating the empty list as simply a case where no elements can match the target. This design choice prioritizes convenience and reduces exception handling burden on callers, as searching an empty list is a valid operation that should produce a clear "not found" result rather than requiring try-catch blocks.
+
+**Use Cases**: Essential for implementing search functionality in applications such as finding student records by ID number, locating products in inventory systems by SKU, checking membership in unordered collections, validating the presence of elements before performing operations, implementing "contains" predicates by checking if return value is not -1, finding indices for subsequent removal or modification operations, and verifying data integrity by locating expected values. The method is particularly valuable when working with lists where element positions are not known in advance but content values are available for searching.
+
+**Comparison to Alternative Approaches**: For sorted lists, this linear search could be replaced with more sophisticated algorithms, though the lack of random access in linked lists limits optimization potential. For frequent search operations on large lists, alternative data structures like hash tables or binary search trees would provide superior O(1) or O(log n) search performance respectively. However, for small lists or infrequent searches, the simplicity and low overhead of linear search make it entirely appropriate.
+
+**Design Consistency**: The method follows established patterns from the codebase including comprehensive empty-list checks, consistent use of `this->` prefix notation, const correctness for read-only operations, and clear return value semantics. The traversal pattern mirrors other linear operations like `display()`, and the validation approach aligns with other query methods in the interface.
+
 ## Use Cases and Applications
 
 ### **When to Use a Singly Linked List**
@@ -333,4 +375,4 @@ Maintaining an explicit size counter provides multiple advantages:
 
 This Singly Linked List implementation provides a solid foundation for understanding pointer-based data structures while demonstrating professional-quality C++ programming practices. The combination of performance optimization, memory safety, and clear interface design makes it suitable for both educational purposes and practical applications requiring dynamic, efficient list management.
 
-_Last Updated: 23rd, February 2026_
+_Last Updated: 28th February, 2026_

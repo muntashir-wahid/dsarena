@@ -22,14 +22,14 @@ int main() {
 
   cout << "----- Second List ------" << endl;
   list_two.display();
-  
 
   for(int i = 1; i <= 10; i++) {
     list_two.append(i * 5);
   }
-  list_two.set(0, 10);
+
   list_two.display();
-  cout << "Current size of the list: " << list_two.get_size() << endl;
+
+  cout << list_two.find(26);
 
   return 0;
 }

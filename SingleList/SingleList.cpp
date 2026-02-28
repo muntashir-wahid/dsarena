@@ -182,3 +182,25 @@ void SingleList::set(int index, int val) {
 
   curr_node->set_data(val);
 }
+
+int SingleList::find(int val) const {
+  if(this->is_empty()) {
+    return -1;
+  }
+
+  Node* curr_node = this->head;
+  int index = 0;
+
+  while(curr_node) {
+    if(curr_node->get_data() == val) {
+      return index;
+    }
+
+    curr_node = curr_node->get_next();
+
+    index++;
+  }
+
+
+  return -1;
+}
